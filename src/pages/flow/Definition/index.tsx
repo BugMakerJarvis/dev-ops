@@ -1,8 +1,9 @@
 import React, {useRef, useState} from 'react';
 import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
 import {definitionList, deleteDefinition, importFile, updateState} from "@/services/flow/definition";
-import {Button, Dropdown, Menu, Upload, message, Tag, Divider} from "antd";
+import {Button, Dropdown, Menu, Upload, message, Tag, Divider, Modal} from "antd";
 import {
+  BlockOutlined,
   DeleteOutlined,
   EditOutlined,
   EllipsisOutlined, InboxOutlined,
@@ -13,8 +14,109 @@ import {
 } from "@ant-design/icons";
 import {Link, history} from 'umi';
 import {ModalForm, ProFormInstance, ProFormText} from "@ant-design/pro-form";
+import ProCard from "@ant-design/pro-card";
+import {addDeployForm, formList, getFormInfo} from "@/services/flow/form";
+// @ts-ignore
+import {GenerateForm, GenerateFormRef} from "react-form-create";
 
 const {Dragger} = Upload;
+
+type FormDetail = {
+  formId: number,
+  formName: string,
+  formContent: string,
+};
+
+type FormListProps = {
+  deploymentId: string,
+  onRowChange: (formContent: string) => void;
+  onVisibleChange: (visible: boolean) => void;
+};
+
+const FormList: React.FC<FormListProps> = (props) => {
+  const {deploymentId, onRowChange, onVisibleChange} = props;
+
+  const actionRef = useRef<ActionType>();
+
+  const columns: ProColumns<FormDetail>[] = [
+    {
+      title: "表单编号",
+      key: "formId",
+      dataIndex: "formId",
+      align: "center",
+      search: false,
+    },
+    {
+      title: "表单名称",
+      key: "formName",
+      dataIndex: "formName",
+      align: "center",
+      search: false,
+    },
+    {
+      title: '操作',
+      key: 'option',
+      valueType: 'option',
+      align: "center",
+      render: (text, r) => [
+        <Button key="1" type="primary" ghost onClick={async () => {
+          onVisibleChange(false);
+          try {
+            const res = await addDeployForm({
+              "formId": r.formId,
+              "deployId": deploymentId,
+            });
+            if (res === 1) {
+              message.success("配置表单成功");
+            } else {
+              message.error("配置表单失败");
+            }
+          } catch (e: any) {
+            message.error(e.message);
+          }
+        }}>确认</Button>
+      ],
+    }
+  ];
+
+  return (
+    <div>
+      <ProTable
+        actionRef={actionRef}
+        columns={columns}
+        options={false}
+        search={false}
+        rowKey="formId"
+        request={async () => {
+          let list: FormDetail[] = [];
+          try {
+            await formList({}).then((d) => {
+              list = d;
+            });
+          } catch (e: any) {
+            message.error(e.message);
+          }
+          return {
+            data: list,
+            success: true,
+            total: list.length,
+          }
+        }}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              if (record.formContent) {
+                onRowChange(record.formContent);
+              }
+            },
+          };
+        }}
+      >
+      </ProTable>
+    </div>
+  )
+}
+
 
 type DefinitionDetail = {
   deploymentId: string,
@@ -22,6 +124,7 @@ type DefinitionDetail = {
   category: string,
   name: string,
   formName: string,
+  formId: number,
   version: number,
   suspensionState: number,
   deploymentTime: string,
@@ -30,8 +133,14 @@ type DefinitionDetail = {
 export default (): React.ReactNode => {
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
+  const formListGenerateFormRef = useRef<GenerateFormRef>(null);
+  const definitionListGenerateFormRef = useRef<GenerateFormRef>(null);
 
   const [uploadFile, setUploadFile] = useState<Blob>(new Blob());
+  const [selectedFormContent, setSelectedFormContent] = useState<string>("");
+  const [isFormListModalVisible, setIsFormListModalVisible] = useState<boolean>(false);
+  const [isFormContentModalVisible, setIsFormContentModalVisible] = useState<boolean>(false);
+  const [defFormContent, setDefFormContent] = useState<string>("");
 
   const columns: ProColumns<DefinitionDetail>[] = [
     {
@@ -77,8 +186,30 @@ export default (): React.ReactNode => {
       valueType: "option",
       align: "center",
       search: false,
-      render: (text, r) => [<div key="f">{r.formName === null ? <span style={{fontWeight: 'bold'}}>暂无表单</span> :
-        <a>{r.formName}</a>}</div>],
+      render: (text, r) => [
+        <div key="f">{r.formName === null ? <span style={{fontWeight: 'bold'}}>暂无表单</span> :
+          <div>
+            <a onClick={async () => {
+              try {
+                setIsFormContentModalVisible(true);
+                const formInfo = await getFormInfo(r.formId);
+                setDefFormContent(formInfo.formContent);
+              } catch (e: any) {
+                message.error(e.message);
+              }
+            }}>{r.formName}</a>
+            <Modal
+              visible={isFormContentModalVisible}
+              width={window.screen.width * 3 / 5}
+              onCancel={() => setIsFormContentModalVisible(false)}
+              footer={null}
+            >
+              {defFormContent === "" ? null :
+                <GenerateForm widgetInfoJson={defFormContent} ref={definitionListGenerateFormRef}/>}
+            </Modal>
+          </div>}
+        </div>
+      ],
     },
     {
       title: "流程版本",
@@ -123,8 +254,33 @@ export default (): React.ReactNode => {
                 {<Link to={`/flow/flowdesigner?deployId=${r.deploymentId}`}>编辑</Link>}
               </Menu.Item>
 
+              {r.formName === null ? <Menu.Item key="2" icon={<BlockOutlined/>}>
+                <a onClick={() => setIsFormListModalVisible(true)}>配置表单</a>
+                <Modal
+                  visible={isFormListModalVisible}
+                  width={window.screen.width * 3 / 5}
+                  onCancel={() => setIsFormListModalVisible(false)}
+                  footer={null}
+                >
+                  <ProCard split="vertical">
+                    <ProCard colSpan="400px" ghost>
+                      <FormList deploymentId={r.deploymentId}
+                                onRowChange={(formContent) => setSelectedFormContent(formContent)}
+                                onVisibleChange={(visible) => {
+                                  setIsFormListModalVisible(visible);
+                                  actionRef.current?.reload();
+                                }}/>
+                    </ProCard>
+                    <ProCard>
+                      {selectedFormContent === "" ? null :
+                        <GenerateForm widgetInfoJson={selectedFormContent} ref={formListGenerateFormRef}/>}
+                    </ProCard>
+                  </ProCard>
+                </Modal>
+              </Menu.Item> : null}
+
               {r.suspensionState === 1 ?
-                <Menu.Item key="2" icon={<PauseCircleOutlined/>} onClick={async () => {
+                <Menu.Item key="3" icon={<PauseCircleOutlined/>} onClick={async () => {
                   try {
                     const res = await updateState(2, r.deploymentId);
                     message.success(res ? "挂起成功" : "挂起失败");
@@ -133,7 +289,7 @@ export default (): React.ReactNode => {
                     message.error(e.message);
                   }
                 }}>挂起</Menu.Item> :
-                <Menu.Item key="2" icon={<PlaySquareOutlined/>} onClick={async () => {
+                <Menu.Item key="3" icon={<PlaySquareOutlined/>} onClick={async () => {
                   try {
                     const res = await updateState(1, r.deploymentId);
                     message.success(res ? "激活成功" : "激活失败");
@@ -143,7 +299,7 @@ export default (): React.ReactNode => {
                   }
                 }}>激活</Menu.Item>}
 
-              <Menu.Item key="3" icon={<DeleteOutlined/>} onClick={async () => {
+              <Menu.Item key="4" icon={<DeleteOutlined/>} onClick={async () => {
                 try {
                   const res = await deleteDefinition(r.deploymentId);
                   message.success(res ? "删除成功" : "删除失败");
