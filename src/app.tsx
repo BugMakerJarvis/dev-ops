@@ -30,6 +30,7 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrentUser();
+      console.log(currentUser, "currentUser");
       // const currentUser = {
       //   access: "admin",
       //   address: "翻斗大街翻斗花园二号楼1001室",
@@ -73,9 +74,9 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
   return {
     rightContentRender: () => <RightContent/>,
     disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.nickname,
+    // },
     footerRender: () => <Footer/>,
     onPageChange: () => {
       const {location} = history;
