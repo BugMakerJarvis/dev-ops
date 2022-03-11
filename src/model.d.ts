@@ -92,4 +92,32 @@ declare namespace MODEL {
       status?: string
     }[]
   }
+
+
+  /**
+   * FlowTaskDto
+   */
+  interface TaskDetail {
+    taskId: string;
+    taskName: string;
+    taskDefKey: string;
+    assigneeId: string;
+    deptName: string;
+    startDeptName: string;
+    assigneeName: string;
+    startUserId: string;
+    startUserName: string;
+    category: string;
+    deployId: string;
+    procDefId: string;
+    procDefKey: string;
+    procDefName: string;
+    procDefVersion: number;
+    procInsId: string;
+    hisProcInsId: string;
+    duration: string;
+    candidate: string;
+    createTime: string;
+    finishTime: string;
+  }
 }

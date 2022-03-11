@@ -88,6 +88,12 @@
         name: 'todo',
         component: './flow/Todo',
       },
+      {
+        path: '/flow/newprocess',
+        name: 'newprocess',
+        component: './flow/NewProcess',
+        hidden: true,
+      },
     ],
   },
   {
