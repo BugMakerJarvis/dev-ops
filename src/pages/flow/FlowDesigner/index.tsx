@@ -1,5 +1,5 @@
 import styles from './index.less';
-import Bpmn from '@/components/Bpmn';
+import BpmnMain from '@/components/BpmnMain';
 import React from 'react';
 import {useHistory} from "umi";
 // import BpmnDesigner from "@/components/BpmnDesigner";
@@ -15,7 +15,7 @@ export default (): React.ReactNode => {
 
   return (
     <div className={styles.title}>
-      <Bpmn deployId={deployId}/>
+      <BpmnMain deployId={deployId}/>
     </div>
   );
 };

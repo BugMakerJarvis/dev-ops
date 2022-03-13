@@ -8,6 +8,7 @@ import {history} from "@@/core/history";
 
 type DefDetail = {
   deploymentId: string,
+  id: string,
   name: string,
   version: number;
   category: string;
@@ -58,8 +59,7 @@ const DefList: React.FC<DefListProps> = (props) => {
       render: (text, r) => [
         <Button key="1" type="primary" ghost onClick={() => {
           onVisibleChange(false);
-          history.push("/flow/newprocess")
-          console.log(r.deploymentId);
+          history.push(`/flow/newprocess?deployId=${r.deploymentId}&procDefId=${r.id}&newProcess=true`);
         }}>发起流程</Button>
       ],
     }
@@ -113,8 +113,8 @@ export default (): React.ReactNode => {
     },
     {
       title: "流程编号",
-      key: "deploymentId",
-      dataIndex: "deploymentId",
+      key: "deployId",
+      dataIndex: "deployId",
       align: "center",
       copyable: true,
       // ellipsis: true,
@@ -123,8 +123,8 @@ export default (): React.ReactNode => {
     },
     {
       title: "流程名称",
-      key: "name",
-      dataIndex: "name",
+      key: "procDefName",
+      dataIndex: "procDefName",
       align: "center",
     },
     {
@@ -159,7 +159,7 @@ export default (): React.ReactNode => {
       dataIndex: "procStatus",
       align: "center",
       search: false,
-      render: (text, r) => [r.finishTime == null ? <Tag key="v" color="green">进行中</Tag> :
+      render: (text, r) => [r.finishTime === null ? <Tag key="v" color="green">进行中</Tag> :
         <Tag key="v" color="red">已完成</Tag>],
     },
     {
@@ -200,6 +200,7 @@ export default (): React.ReactNode => {
         <ProTable
           actionRef={actionRef}
           columns={columns}
+          rowKey="taskId"
           toolbar={{
             title: '我的流程',
             tooltip: '😓',
@@ -224,7 +225,7 @@ export default (): React.ReactNode => {
           request={async (params) => {
             let list: MODEL.TaskDetail[] = [];
             try {
-              await myProcess(1, params.pageSize ? params.pageSize : 10, params.name ? params.name : "", params.deployTime ? params.deployTime : "").then((d) => {
+              await myProcess(params.pageNum ? params.pageNum : 1, params.pageSize ? params.pageSize : 10).then((d) => {
                 list = d.records;
               })
               return {

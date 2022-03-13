@@ -59,6 +59,7 @@
     "bpmn-js-properties-panel": "^0.46.0",
     "camunda-bpmn-moddle": "^6.1.1",
     "classnames": "^2.3.0",
+    "diagram-js": "^8.1.2",
     "lodash": "^4.17.0",
     "omit.js": "^2.0.2",
     "rc-menu": "^9.1.0",

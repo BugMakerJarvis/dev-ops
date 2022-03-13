@@ -6,11 +6,9 @@ import { GetForm, PostForm } from '../ReqUtils';
 export const myProcess = async (
   pageNum: number,
   pageSize: number,
-  name: string,
-  deployTime: string,
 ) => {
   return GetForm<any>(
-    `/api/flowable/task/myProcess?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&deployTime=${deployTime}`,
+    `/api/flowable/task/myProcess?pageNum=${pageNum}&pageSize=${pageSize}`,
   );
 };
 
@@ -38,11 +36,9 @@ export const revokeProcess = async (flowTaskVo: any) => {
 export const todoList = async (
   pageNum: number,
   pageSize: number,
-  name: string,
-  deployTime: string,
 ) => {
   return GetForm<any>(
-    `/api/flowable/task/todoList?pageNum=${pageNum}&pageSize=${pageSize}&name=${name}&deployTime=${deployTime}`,
+    `/api/flowable/task/todoList?pageNum=${pageNum}&pageSize=${pageSize}`,
   );
 };
 

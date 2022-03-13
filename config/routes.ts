@@ -62,6 +62,7 @@
         path: '/flow/flowdesigner',
         name: 'flowdesigner',
         component: './flow/FlowDesigner',
+        hideInMenu: true,
       },
       {
         path: '/flow/form',
@@ -72,6 +73,7 @@
         path: '/flow/formdesigner',
         name: 'formdesigner',
         component: './flow/FormDesigner',
+        hideInMenu: true,
       },
       {
         path: '/flow/myprocess',
@@ -92,7 +94,7 @@
         path: '/flow/newprocess',
         name: 'newprocess',
         component: './flow/NewProcess',
-        hidden: true,
+        hideInMenu: true,
       },
     ],
   },

@@ -66,6 +66,7 @@ export default {
   'menu.flow.form': 'Form Management',
   'menu.flow.formdesigner': 'Form Designer',
   'menu.flow.myprocess': 'My Process',
+  'menu.flow.newprocess': 'New Process',
   'menu.flow.finished': 'Finished Task',
   'menu.flow.todo': 'Todo Task',
 };
