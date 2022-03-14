@@ -183,13 +183,13 @@ export default (): React.ReactNode => {
       align: "center",
       search: false,
     },
-    // {
-    //   title: "办理",
-    //   key: "assigneeName",
-    //   dataIndex: "assigneeName",
-    //   align: "center",
-    //   search: false,
-    // },
+    {
+      title: "办理",
+      key: "assigneeName",
+      dataIndex: "assigneeName",
+      align: "center",
+      search: false,
+    },
     {
       title: '操作',
       key: 'option',
@@ -200,7 +200,7 @@ export default (): React.ReactNode => {
           return (
             <Menu>
               <Menu.Item key="1" icon={<InfoCircleOutlined/>} onClick={() => {
-                history.push(`/flow/newprocess?procInsId=${r.procInsId}&deployId=${r.deployId}&newProcess=false`)
+                history.push(`/flow/newprocess?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&newProcess=false`)
               }}>
                 详情
               </Menu.Item>

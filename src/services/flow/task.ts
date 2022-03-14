@@ -1,4 +1,4 @@
-import { GetForm, PostForm } from '../ReqUtils';
+import {GetForm, PostForm} from '../ReqUtils';
 
 /**
  * 获取我发起的流程
@@ -60,7 +60,7 @@ export const flowRecord = async (procInsId: string, deployId: string) => {
  * 获取流程变量
  */
 export const processVariables = async (taskId: string) => {
-  return GetForm<any>(`/api/flowable/task/processVariables?taskId=${taskId}`);
+  return GetForm<any>(`/api/flowable/task/processVariables/${taskId}`);
 };
 
 /**

@@ -4,11 +4,12 @@ import ProCard from "@ant-design/pro-card";
 import {Button, message, Statistic, Steps} from "antd";
 import {history} from "@@/core/history";
 import {FileImageOutlined, FileTextOutlined, SolutionOutlined} from "@ant-design/icons";
-import {flowRecord} from "@/services/flow/task";
+import {flowRecord, processVariables} from "@/services/flow/task";
 // @ts-ignore
 import {GenerateForm, GenerateFormRef} from "react-form-create";
 import BpmnView from "@/components/BpmnView";
 import {startDefinition} from "@/services/flow/instance";
+import moment from 'moment';
 
 const {Divider} = ProCard;
 
@@ -20,6 +21,7 @@ export default (): React.ReactNode => {
     deployId: "",
     procInsId: "",
     procDefId: "",
+    taskId: "",
     newProcess: "false",
   };
   if (search) {
@@ -30,6 +32,7 @@ export default (): React.ReactNode => {
   const generateFormRef = useRef<GenerateFormRef>(null);
   const [defFormContent, setDefFormContent] = useState<string>("");
   const [flowList, setFlowList] = useState<MODEL.TaskDetail[]>([]);
+  const [defFormValue, setDefFormValue] = useState<any>({});
 
   useEffect(() => {
     flowRecord(params.newProcess === "true" ? "" : params.procInsId, params.deployId).then((d) => {
@@ -38,6 +41,15 @@ export default (): React.ReactNode => {
         setFlowList(d.flowList);
       }
     });
+    if (params.newProcess === "false" && params.taskId !== "") {
+      processVariables(params.taskId).then((d: object) => {
+        for (const [key, val] of Object.entries(d)) {
+          if (key.indexOf("DatePicker") !== -1) {
+            setDefFormValue({...d, [key]: moment(new Date(val.toString()))})
+          }
+        }
+      })
+    }
   }, []);
 
   return (
@@ -53,7 +65,7 @@ export default (): React.ReactNode => {
         }
       >
         <ProCard/>
-        <ProCard colSpan={{xl: '50%',}} bordered layout="default" actions={[
+        <ProCard colSpan={{xl: '50%',}} bordered layout="default" actions={params.newProcess === "false" ? [] : [
           <Button type="primary" onClick={async () => {
             let variables = null;
             await generateFormRef.current.getData().then((d: any) => {
@@ -77,7 +89,8 @@ export default (): React.ReactNode => {
             重置
           </Button>,
         ]}>
-          {defFormContent === "" ? null : <GenerateForm widgetInfoJson={defFormContent} ref={generateFormRef}/>}
+          {defFormContent === "" ? null :
+            <GenerateForm formValue={defFormValue} widgetInfoJson={defFormContent} ref={generateFormRef}/>}
         </ProCard>
         <ProCard/>
       </ProCard>
