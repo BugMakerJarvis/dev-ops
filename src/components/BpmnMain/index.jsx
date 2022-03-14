@@ -59,7 +59,7 @@ class BpmnMain extends Component {
           }
           const result = await this.state.bpmn.importXML(receivedXml === null ? Xml : receivedXml);
           const {warnings} = result;
-          console.log(warnings);
+          console.log(warnings, "BpmnMain warnings");
         } catch (err) {
           console.log(err.message, err.warnings);
         }

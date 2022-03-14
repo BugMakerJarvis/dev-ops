@@ -18,6 +18,7 @@ import ProCard from "@ant-design/pro-card";
 import {addDeployForm, formList, getFormInfo} from "@/services/flow/form";
 // @ts-ignore
 import {GenerateForm, GenerateFormRef} from "react-form-create";
+// import BpmnView from "@/components/BpmnView";
 
 const {Dragger} = Upload;
 
@@ -140,6 +141,7 @@ export default (): React.ReactNode => {
   const [selectedFormContent, setSelectedFormContent] = useState<string>("");
   const [isFormListModalVisible, setIsFormListModalVisible] = useState<boolean>(false);
   const [isFormContentModalVisible, setIsFormContentModalVisible] = useState<boolean>(false);
+  // const [isDefModalVisible, setIsDefModalVisible] = useState<boolean>(false);
   const [defFormContent, setDefFormContent] = useState<string>("");
 
   const columns: ProColumns<DefinitionDetail>[] = [
@@ -325,6 +327,7 @@ export default (): React.ReactNode => {
         <ProTable
           actionRef={actionRef}
           columns={columns}
+          rowKey="deploymentId"
           toolbar={{
             title: '流程定义',
             tooltip: '😓',

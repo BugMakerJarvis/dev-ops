@@ -1,10 +1,16 @@
 import React, {useRef, useState} from 'react';
 import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
-import {Tag, Modal, Button} from "antd";
-import {myProcess} from "@/services/flow/task";
+import {Tag, Modal, Button, Dropdown, Menu, message} from "antd";
+import {myProcess, stopProcess} from "@/services/flow/task";
 import {definitionList} from "@/services/flow/definition";
-import {PlusOutlined} from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EllipsisOutlined, InfoCircleOutlined,
+  PlusOutlined
+} from "@ant-design/icons";
 import {history} from "@@/core/history";
+import {deleteInstance} from "@/services/flow/instance";
 
 type DefDetail = {
   deploymentId: string,
@@ -177,19 +183,67 @@ export default (): React.ReactNode => {
       align: "center",
       search: false,
     },
-    {
-      title: "办理",
-      key: "assigneeName",
-      dataIndex: "assigneeName",
-      align: "center",
-      search: false,
-    },
+    // {
+    //   title: "办理",
+    //   key: "assigneeName",
+    //   dataIndex: "assigneeName",
+    //   align: "center",
+    //   search: false,
+    // },
     {
       title: '操作',
       key: 'option',
       valueType: 'option',
       align: "center",
-      render: (text, r) => [],
+      render: (text, r) => [
+        <Dropdown key="menu" overlay={() => {
+          return (
+            <Menu>
+              <Menu.Item key="1" icon={<InfoCircleOutlined/>} onClick={() => {
+                history.push(`/flow/newprocess?procInsId=${r.procInsId}&deployId=${r.deployId}&newProcess=false`)
+              }}>
+                详情
+              </Menu.Item>
+
+              <Menu.Item key="2" icon={<CloseCircleOutlined/>} onClick={async () => {
+                try {
+                  const res = await stopProcess({"instanceId": r.procInsId});
+                  if (res) {
+                    message.success("取消申请成功");
+                  } else {
+                    message.error("取消申请失败");
+                  }
+                  actionRef.current?.reload();
+                } catch (e: any) {
+                  // message.error(e.message);
+                }
+              }}>
+                取消申请
+              </Menu.Item>
+
+              <Menu.Item key="3" icon={<DeleteOutlined/>} onClick={async () => {
+                try {
+                  const res = await deleteInstance(r.procInsId, "");
+                  if (res) {
+                    message.success(`删除流程实例 ${r.procInsId} 成功`);
+                  } else {
+                    message.success(`删除流程实例 ${r.procInsId} 失败`);
+                  }
+                  actionRef.current?.reload();
+                } catch (e: any) {
+                  message.error(e.message);
+                }
+              }}>
+                删除
+              </Menu.Item>
+            </Menu>
+          )
+        }} placement="bottomCenter">
+          <Button type="dashed">
+            <EllipsisOutlined/>
+          </Button>
+        </Dropdown>,
+      ],
     }
   ];
 
@@ -200,7 +254,7 @@ export default (): React.ReactNode => {
         <ProTable
           actionRef={actionRef}
           columns={columns}
-          rowKey="taskId"
+          rowKey="procInsId"
           toolbar={{
             title: '我的流程',
             tooltip: '😓',

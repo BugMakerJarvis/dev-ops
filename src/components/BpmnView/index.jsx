@@ -42,7 +42,7 @@ class BpmnView extends Component {
           }
           const result = await this.state.bpmnView.importXML(receivedXml === null ? Xml : receivedXml);
           const {warnings} = result;
-          console.log(warnings);
+          console.log(warnings, "BpmnView warnings");
           this.state.bpmnView.get("canvas").zoom("fit-viewport", "auto");
         } catch (err) {
           console.log(err.message, err.warnings);

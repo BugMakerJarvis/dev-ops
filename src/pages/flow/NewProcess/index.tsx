@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory} from "umi";
 import ProCard from "@ant-design/pro-card";
-import {Button, message} from "antd";
+import {Button, message, Statistic, Steps} from "antd";
 import {history} from "@@/core/history";
 import {FileImageOutlined, FileTextOutlined, SolutionOutlined} from "@ant-design/icons";
 import {flowRecord} from "@/services/flow/task";
@@ -10,14 +10,17 @@ import {GenerateForm, GenerateFormRef} from "react-form-create";
 import BpmnView from "@/components/BpmnView";
 import {startDefinition} from "@/services/flow/instance";
 
+const {Divider} = ProCard;
+
 export default (): React.ReactNode => {
 
   const h = useHistory();
   const search = h.location.search;
   const params = {
     deployId: "",
+    procInsId: "",
     procDefId: "",
-    newProcess: false,
+    newProcess: "false",
   };
   if (search) {
     const p: any[] = search.substring(1).split("&");
@@ -26,10 +29,14 @@ export default (): React.ReactNode => {
 
   const generateFormRef = useRef<GenerateFormRef>(null);
   const [defFormContent, setDefFormContent] = useState<string>("");
+  const [flowList, setFlowList] = useState<MODEL.TaskDetail[]>([]);
 
   useEffect(() => {
-    flowRecord("", params.deployId).then((d) => {
+    flowRecord(params.newProcess === "true" ? "" : params.procInsId, params.deployId).then((d) => {
       setDefFormContent(JSON.stringify(d.formData));
+      if (params.newProcess === "false") {
+        setFlowList(d.flowList);
+      }
     });
   }, []);
 
@@ -48,8 +55,12 @@ export default (): React.ReactNode => {
         <ProCard/>
         <ProCard colSpan={{xl: '50%',}} bordered layout="default" actions={[
           <Button type="primary" onClick={async () => {
+            let variables = null;
+            await generateFormRef.current.getData().then((d: any) => {
+              variables = d;
+            });
             try {
-              const res = await startDefinition(params.procDefId, null);
+              const res = await startDefinition(params.procDefId, variables);
               if (res === "流程启动成功") {
                 message.success(res);
               } else {
@@ -71,13 +82,33 @@ export default (): React.ReactNode => {
         <ProCard/>
       </ProCard>
 
-      {params.newProcess ? null : <ProCard
+      {params.newProcess === "true" ? null : <ProCard
         style={{marginTop: 18}}
         title={<div><SolutionOutlined/> 审批记录</div>}
         headerBordered
         layout="center"
       >
-        审批记录
+        <Steps direction="vertical" current={flowList.length - 1}>
+          {flowList.map(f => <Steps.Step key={f.taskId} title={f.taskName} description={
+            <ProCard.Group direction='row'>
+              <ProCard>
+                <Statistic title="实际办理" value={f.assigneeName === null ? "未知" : f.assigneeName}/>
+              </ProCard>
+              <Divider type='vertical'/>
+              <ProCard>
+                <Statistic title="接收时间" value={f.createTime === null ? "未知" : f.createTime}/>
+              </ProCard>
+              <Divider type='vertical'/>
+              <ProCard>
+                <Statistic title="办结时间" value={f.finishTime === null ? "未知" : f.finishTime}/>
+              </ProCard>
+              <Divider type='vertical'/>
+              <ProCard>
+                <Statistic title="耗时" value={f.duration === null ? "未知" : f.duration}/>
+              </ProCard>
+            </ProCard.Group>
+          }/>)}
+        </Steps>
       </ProCard>}
 
       <ProCard
