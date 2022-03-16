@@ -32,6 +32,7 @@ export async function getInitialState(): Promise<{
     try {
       const currentUser = await queryCurrentUser();
       console.log(currentUser, "currentUser");
+      return currentUser.data;
       // const currentUser = {
       //   access: "admin",
       //   address: "翻斗大街翻斗花园二号楼1001室",
@@ -49,7 +50,7 @@ export async function getInitialState(): Promise<{
       //   unreadCount: 11,
       //   userid: "00000001"
       // }
-      return currentUser.data;
+      // return currentUser;
     } catch (error: any) {
       history.push(loginPath);
     }

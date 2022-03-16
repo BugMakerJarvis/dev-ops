@@ -38,13 +38,13 @@ class BpmnMain extends Component {
         bpmn: new BpmnModeler({
           container: document.getElementById('canvas'),
           keyboard: {bindTo: window},
-          propertiesPanel: {
-            parent: '.properties-panel',
-          },
-          additionalModules: [
-            propertiesPanelModule,
-            propertiesProviderModule,
-          ],
+          // propertiesPanel: {
+          //   parent: '.properties-panel',
+          // },
+          // additionalModules: [
+          //   propertiesPanelModule,
+          //   propertiesProviderModule,
+          // ],
         }),
       },
       async () => {
@@ -131,8 +131,8 @@ class BpmnMain extends Component {
         {/* 工具栏 */}
         {bpmn && <BpmnToolBar bpmn={bpmn}/>}
         {/* 属性面板 */}
-        {/*{bpmn && <PropertyPanel bpmn={bpmn}/>}*/}
-        <div className="properties-panel"></div>
+        {bpmn && <PropertyPanel bpmn={bpmn}/>}
+        {/*<div className="properties-panel"></div>*/}
       </div>
     );
   }

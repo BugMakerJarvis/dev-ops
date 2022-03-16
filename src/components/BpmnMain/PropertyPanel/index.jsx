@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
-import {Input, Radio, Select, Form, Button, Checkbox, Divider, Switch} from 'antd';
-import styles from './index.less';
+import React, {Component} from "react";
+import {Input, Select, Form, Button, Divider, Switch, Card, Row, Col, Tag, Space, Radio} from "antd";
+import _ from "lodash";
+import styles from "./index.less";
 
 const {Option} = Select;
 
@@ -15,53 +16,105 @@ class PropertyPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [
-        {value: 'ls@163.com', label: '李四'},
-        {value: 'zs@qq.com', label: '张三'},
-        {value: '$INITIATOR', label: '发起人自己'},
-      ],
-      roles: [
-        {value: 'to_review', label: '复核人'},
-        {value: 'rechecker', label: '审定人'},
-      ],
-      // 任务节点
-      element: null,
+      users: [], // 可选用户列表
+      roles: [], // 可选角色列表
+      element: {}, // 节点事件对象
+      elementInfo: {
+        // 节点属性信息
+        id: "", // 节点id
+        name: "", // 节点名称
+        $type: "", // 节点类型
+        approvalType: "user", // 审批类型
+        approvalValue: "", // 审批人/角色
+        // FlowLineType: "normal", // 流程线属性类型（可设为默认或条件分支，或不设置）
+      },
     };
   }
 
   componentDidMount() {
+    // 1.初始化可选用户和角色列表
+    this.initData();
+    // 2.初始化监听事件和候选用户
     this.addEventListener();
   }
 
+  /** 初始化可选用户和角色列表 */
+  initData = () => {
+    this.setState({
+      // 1.初始化可选用户列表
+      users: [
+        {value: "ls@163.com", label: "李四"},
+        {value: "zs@qq.com", label: "张三"},
+        {value: "$INITIATOR", label: "发起人自己"},
+      ],
+      // 2.初始化可选角色列表
+      roles: [
+        {value: "to_review", label: "复核人"},
+        {value: "rechecker", label: "审定人"},
+      ],
+    });
+  };
+
   /** 添加节点事件监听 */
   addEventListener = () => {
-    this.props.bpmn.on('selection.changed', (e) => {
+    // 1.监听节点选中
+    this.props.bpmn.on("selection.changed", (e) => {
       const element = e.newSelection[0];
-      console.log('selection.changed', element);
-      if (element) {
-        this.setState({
-          element,
-        });
+      if (!element) return;
+      const elementInfo = {
+        ...element.businessObject,
+        ...element.businessObject.$attrs,
+      };
+      // 选中时:保存任务节点 element 和任务节点信息 elementInfo
+      this.setState({
+        element,
+        elementInfo,
+      });
+      console.log("选中", elementInfo);
+    });
+
+    //  2.监听节点属性变化
+    this.props.bpmn.on("element.changed", (e) => {
+      // 获取节点属性
+      const {element} = e;
+      if (!element) return;
+      const oldElementInfo = this.state.elementInfo;
+      const newElementInfo = {
+        ...element.businessObject,
+        ...element.businessObject.$attrs,
+      };
+
+      // 节点xml属性变化更新到state视图
+      if (element.id === oldElementInfo.id) {
+        this.setState({elementInfo: newElementInfo});
       }
     });
 
     this.props.bpmn.on('root.added', (e) => {
       const {element} = e;
-      console.log('root.added', element);
-      if (element.type === 'bpmn:Process') {
-        this.setState({
-          element,
-        });
+      if (!element) return;
+      const newElementInfo = {
+        ...element.businessObject,
+        ...element.businessObject.$attrs,
+      };
+
+      // 节点xml属性变化更新到state视图
+      if (element.type === "bpmn:Process") {
+        this.setState({elementInfo: newElementInfo});
       }
     });
 
     this.props.bpmn.on('element.click', (e) => {
       const {element} = e;
-      console.log('element.click', element);
-      if (element.type === 'bpmn:Process') {
-        this.setState({
-          element,
-        });
+      if (!element) return;
+      const newElementInfo = {
+        ...element.businessObject,
+        ...element.businessObject.$attrs,
+      };
+
+      // 节点xml属性变化更新到state视图
+      if (element.type === "bpmn:Process") {
+        this.setState({elementInfo: newElementInfo});
       }
     });
   };
@@ -71,7 +124,7 @@ class PropertyPanel extends Component {
    * @param {String} color 颜色
    */
   editColor = (color) => {
-    const modeling = this.props.bpmn.get('modeling');
+    const modeling = this.props.bpmn.get("modeling");
     const element = this.state.element;
     modeling.setColor(element, {fill: null, stroke: color});
     modeling.updateProperties(element, {color: color});
@@ -83,8 +136,7 @@ class PropertyPanel extends Component {
    */
   updateLabel = (e) => {
     const newName = e.target.value;
-    console.log('updateLabel', newName);
-    const modeling = this.props.bpmn.get('modeling');
+    const modeling = this.props.bpmn.get("modeling");
     const {element} = this.state;
     modeling.updateLabel(element, newName);
   };
@@ -94,25 +146,71 @@ class PropertyPanel extends Component {
    * @param {Object} params 对象参数
    */
   updateProperties = (params) => {
-    const modeling = this.props.bpmn.get('modeling');
+    const modeling = this.props.bpmn.get("modeling");
     const element = this.state.element;
     modeling.updateProperties(element, params);
   };
 
+  /**
+   * 更新xml节点表达式
+   * @param {Object}} e 事件对象
+   */
+  updateCondition = (e) => {
+    const value = e.target.value;
+    const modeling = this.props.bpmn.get("modeling");
+    const element = this.state.element;
+    modeling.updateProperties(element, {
+      conditionExpression: this.props.bpmn
+        .get("moddle")
+        .create("bpmn:FormalExpression", {body: value}),
+    });
+  };
+
+  // // 更新流程线条属性类型
+  // updateFlowLineType = (value) => {
+  //   // 条件分支
+  //   if (value === "condition") {
+  //     this.updateProperties({
+  //       FlowLineType: value,
+  //     });
+  //   }
+  //   // 默认分支
+  //   else if (value === "default") {
+  //     this.updateProperties({
+  //       FlowLineType: "default",
+  //       conditionExpression: null, // 清空条件表达式
+  //     });
+  //   }
+  //   // 普通分支
+  //   else {
+  //     this.updateProperties({
+  //       FlowLineType: "normal",
+  //       conditionExpression: null, // 清空条件表达式
+  //     });
+  //   }
+  // };
+
   // @todo 属性面板
   render() {
     const {bpmn} = this.props;
-    const {element} = this.state;
-    const type = element?.type;
+    const {elementInfo, users, roles, approvalType} = this.state;
+    /** 审批下拉框标题 */
+    const approvalTitle = approvalType === "user" ? "选择审批人" : "选择审批角色";
+    /** 审批人下拉框列表 */
+    const approvalList = elementInfo.approvalType === "user" ? users : roles;
+
+    /** 表达式内容 */
+    const ConditionValue = _.get(elementInfo, "conditionExpression.body", "");
 
     /** 是否显示Process组件 */
-    const showProcess = ['bpmn:Process'].includes(type);
+    const showProcess = ['bpmn:Process'].includes(elementInfo.$type);
 
     /** 是否显示StartEnd组件 */
-    const showStartEnd = ['bpmn:IntermediateThrowEvent', 'bpmn:StartEvent', 'bpmn:EndEvent'].includes(type);
+    const showStartEnd = ['bpmn:IntermediateThrowEvent', 'bpmn:StartEvent', 'bpmn:EndEvent'].includes(elementInfo.$type);
 
     /** 是否显示Task组件 */
-    const showTask = ['bpmn:UserTask',
+    const showTask = [
+      // 'bpmn:UserTask',
       'bpmn:Task',
       'bpmn:SendTask',
       'bpmn:ReceiveTask',
@@ -122,130 +220,150 @@ class PropertyPanel extends Component {
       'bpmn:ScriptTask',
       // 'bpmn:CallActivity',
       // 'bpmn:SubProcess',
-    ].includes(type);
+    ].includes(elementInfo.$type);
+
+    /** 是否显示UserTask组件*/
+    const showUserTask = ['bpmn:UserTask',].includes(elementInfo.$type);
 
     /** 是否显示SequenceFlow组件 */
-    const showSequenceFlow = ['bpmn:SequenceFlow'].includes(type);
+    const showSequenceFlow = ['bpmn:SequenceFlow'].includes(elementInfo.$type);
 
     /** 是否显示Gateway组件 */
-    const showGateway = ['bpmn:InclusiveGateway', 'bpmn:ExclusiveGateway', 'bpmn:ParallelGateway', 'bpmn:EventBasedGateway'].includes(type);
+    const showGateway = ['bpmn:InclusiveGateway', 'bpmn:ExclusiveGateway', 'bpmn:ParallelGateway', 'bpmn:EventBasedGateway'].includes(elementInfo.$type);
 
     return (
       <div className={styles.PropertyPanel}>
         {showProcess && (
-          <Form name="Process" labelCol={{span: 8}}>
-            <Divider orientation="center">流程</Divider>
-            <Form.Item label="流程标识Key" name="id"
-                       rules={[{required: true, message: 'Please input process key!'}]}>
-              <Input/>
-            </Form.Item>
-            <Form.Item label="流程分类" name="processCategory">
-              <Select placeholder="Please select...">
-                <Option value="categoryOne">流程类别一</Option>
-                <Option value="categoryTwo">流程类别二</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item label="流程名称" name="name">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点描述" name="documentation">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="执行监听器" name="executionListener">
-              <Button type="dashed">编辑</Button>
-            </Form.Item>
-          </Form>
+          <Card title="流程" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="流程标识 key" allowClear/>
+              <Input addonBefore="流程名称" allowClear/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>流程分类 👉</span>
+                <Select placeholder="Please select...">
+                  <Option value="categoryOne">流程类别一</Option>
+                  <Option value="categoryTwo">流程类别二</Option>
+                </Select>
+              </Space>
+              <Space>
+                <span>执行监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+            </Space>
+          </Card>
         )}
 
         {showTask && (
-          <Form name="Task" labelCol={{span: 8}}>
-            <Divider orientation="center">任务</Divider>
-            <Form.Item label="节点Id" name="id"
-                       rules={[{required: true, message: 'Please input node id!'}]}>
-              <Input key={element.id} value={element.id} onChange={(e) => {
-                console.log(e.target.value)
-              }}/>
-            </Form.Item>
-            <Form.Item label="节点名称" name="name"
-                       rules={[{required: true, message: 'Please input node name!'}]}>
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点描述" name="documentation">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="任务监听器" name="taskListener">
-              <Button type="dashed">编辑</Button>
-            </Form.Item>
-          </Form>
+          <Card title="任务" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>任务监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+            </Space>
+          </Card>
+        )}
+
+        {showUserTask && (
+          <Card title="用户任务" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>任务监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+
+              <Radio.Group
+                value={elementInfo.approvalType}
+                onChange={(e) => {
+                  this.updateProperties({
+                    approvalType: e.target.value,
+                    approvalValue: "",
+                  });
+                  this.setState({
+                    approvalType: e.target.value,
+                  })
+                }}
+              >
+                <Radio value={"user"}>指定成员</Radio>
+                <Radio value={"role"}>指定角色</Radio>
+              </Radio.Group>
+
+              <span>{approvalTitle} 👇</span>
+              <Select
+                showSearch
+                style={{width: "100%"}}
+                value={elementInfo.approvalValue}
+                onChange={(value) => {
+                  this.updateProperties({
+                    approvalValue: value,
+                    "activiti:assignee": value,
+                  });
+                }}
+              >
+                {approvalList.map((i) => (
+                  <Select.Option key={i.value} value={i.value}>
+                    {i.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Space>
+          </Card>
         )}
 
         {showSequenceFlow && (
-          <Form name="SequenceFlow" labelCol={{span: 8}}>
-            <Divider orientation="center">流程线</Divider>
-            <Form.Item label="节点Id" name="id"
-                       rules={[{required: true, message: 'Please input node id!'}]}>
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点名称" name="name">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点描述" name="documentation">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="执行监听器" name="executionListener">
-              <Button type="dashed">编辑</Button>
-            </Form.Item>
-            <Form.Item label="跳转条件" name="conditionExpression">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="跳过表达式" name="skipExpression">
-              <Input/>
-            </Form.Item>
-          </Form>
+          <Card title="流程线" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>执行监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+              <Input addonBefore="跳转条件" value={ConditionValue} onChange={this.updateCondition} allowClear/>
+              <Input addonBefore="跳过表达式" allowClear/>
+            </Space>
+          </Card>
         )}
 
         {showGateway && (
-          <Form name="Gateway" labelCol={{span: 8}}>
-            <Divider orientation="center">网关</Divider>
-            <Form.Item label="节点Id" name="id"
-                       rules={[{required: true, message: 'Please input node id!'}]}>
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点名称" name="name">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点描述" name="documentation">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="执行监听器" name="executionListener">
-              <Button type="dashed">编辑</Button>
-            </Form.Item>
-            <Form.Item label="异步" name="async">
-              <Switch checkedChildren="开启" unCheckedChildren="关闭"/>
-            </Form.Item>
-          </Form>
+          <Card title="网关" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>任务监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+              <Space>
+                <span>异步 👉</span>
+                <Switch checkedChildren="开启" unCheckedChildren="关闭"/>
+              </Space>
+            </Space>
+          </Card>
         )}
 
         {showStartEnd && (
-          <Form name="StartEnd" labelCol={{span: 8}}>
-            <Divider orientation="center">始末节点</Divider>
-            <Form.Item label="节点Id" name="id"
-                       rules={[{required: true, message: 'Please input node id!'}]}>
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点名称" name="name">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="节点描述" name="documentation">
-              <Input/>
-            </Form.Item>
-            <Form.Item label="执行监听器" name="executionListener">
-              <Button type="dashed">编辑</Button>
-            </Form.Item>
-            <Form.Item label="发起人" name="initiator">
-              <Input/>
-            </Form.Item>
-          </Form>
+          <Card title="始末节点" bordered={false}>
+            <Space direction="vertical" size="large">
+              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
+              <Input addonBefore="节点描述" allowClear/>
+              <Space>
+                <span>任务监听器 👉</span>
+                <Button type="dashed">编辑</Button>
+              </Space>
+              <Input addonBefore="发起人" allowClear/>
+            </Space>
+          </Card>
         )}
       </div>
     );
