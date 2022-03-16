@@ -91,9 +91,9 @@
         component: './flow/Todo',
       },
       {
-        path: '/flow/newprocess',
-        name: 'newprocess',
-        component: './flow/NewProcess',
+        path: '/flow/taskrecord',
+        name: 'taskrecord',
+        component: './flow/HandleTask',
         hideInMenu: true,
       },
     ],

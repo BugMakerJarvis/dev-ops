@@ -66,7 +66,7 @@ export default {
   'menu.flow.form': '表单配置',
   'menu.flow.formdesigner': '表单设计',
   'menu.flow.myprocess': '我的流程',
-  'menu.flow.newprocess': '新增流程',
+  'menu.flow.taskrecord': '任务记录',
   'menu.flow.finished': '已办任务',
   'menu.flow.todo': '待办任务',
 };
