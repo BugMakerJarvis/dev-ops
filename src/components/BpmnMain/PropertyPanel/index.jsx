@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Input, Select, Form, Button, Divider, Switch, Card, Row, Col, Tag, Space, Radio} from "antd";
 import _ from "lodash";
 import styles from "./index.less";
+import {getRoleList, getUserList} from "@/services/rbac/rbac";
 
 const {Option} = Select;
 
@@ -17,15 +18,16 @@ class PropertyPanel extends Component {
     super(props);
     this.state = {
       users: [], // 可选用户列表
-      roles: [], // 可选角色列表
+      // roles: [], // 可选角色列表
       element: {}, // 节点事件对象
       elementInfo: {
         // 节点属性信息
         id: "", // 节点id
         name: "", // 节点名称
         $type: "", // 节点类型
-        approvalType: "user", // 审批类型
-        approvalValue: "", // 审批人/角色
+        // approvalType: "user", // 审批类型
+        // approvalValue: "", // 审批人/角色
+        "activiti:assignee": ""
         // FlowLineType: "normal", // 流程线属性类型（可设为默认或条件分支，或不设置）
       },
     };
@@ -39,19 +41,22 @@ class PropertyPanel extends Component {
   }
 
   /** 初始化可选用户和角色列表 */
-  initData = () => {
+  initData = async () => {
+    const userList = await getUserList();
+    // const roleList = await getRoleList();
+    userList.map(u => {
+      u.value = u.username;
+      u.label = u.nickname;
+    });
+    // roleList.map(r => {
+    //   r.value = r.code;
+    //   r.label = r.name;
+    // })
     this.setState({
       // 1.初始化可选用户列表
-      users: [
-        {value: "ls@163.com", label: "李四"},
-        {value: "zs@qq.com", label: "张三"},
-        {value: "$INITIATOR", label: "发起人自己"},
-      ],
+      users: userList,
       // 2.初始化可选角色列表
-      roles: [
-        {value: "to_review", label: "复核人"},
-        {value: "rechecker", label: "审定人"},
-      ],
+      // roles: roleList,
     });
   };
 
@@ -140,6 +145,17 @@ class PropertyPanel extends Component {
     const {element} = this.state;
     modeling.updateLabel(element, newName);
   };
+  //
+  // /**
+  //  * 更新Xml节点Id
+  //  * @param {Object} e 事件对象
+  //  */
+  // updateId = (e) => {
+  //   const newId = e.target.value;
+  //   const modeling = this.props.bpmn.get("modeling");
+  //   const {element} = this.state;
+  //   modeling.updateId(element, newId);
+  // };
 
   /**
    * 更新xml节点属性
@@ -148,6 +164,12 @@ class PropertyPanel extends Component {
   updateProperties = (params) => {
     const modeling = this.props.bpmn.get("modeling");
     const element = this.state.element;
+    // Object.keys(params).forEach((k) => {
+    //   const newKey = "flowable:" + k;
+    //   params[newKey] = params[k];
+    //   // delete params[k];
+    // })
+    // console.log(params);
     modeling.updateProperties(element, params);
   };
 
@@ -193,11 +215,14 @@ class PropertyPanel extends Component {
   // @todo 属性面板
   render() {
     const {bpmn} = this.props;
-    const {elementInfo, users, roles, approvalType} = this.state;
+
+    // const {elementInfo, users, roles, approvalType} = this.state;
+    const {elementInfo, users} = this.state;
     /** 审批下拉框标题 */
-    const approvalTitle = approvalType === "user" ? "选择审批人" : "选择审批角色";
+    // const approvalTitle = approvalType === "user" ? "选择审批人" : "选择审批角色";
     /** 审批人下拉框列表 */
-    const approvalList = elementInfo.approvalType === "user" ? users : roles;
+      // const approvalList = elementInfo.approvalType === "user" ? users : roles;
+    const approvalList = users;
 
     /** 表达式内容 */
     const ConditionValue = _.get(elementInfo, "conditionExpression.body", "");
@@ -236,7 +261,7 @@ class PropertyPanel extends Component {
         {showProcess && (
           <Card title="流程" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="流程标识 key" allowClear/>
+              <Input addonBefore="流程标识 key" allowClear value={elementInfo.id}/>
               <Input addonBefore="流程名称" allowClear/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
@@ -257,7 +282,7 @@ class PropertyPanel extends Component {
         {showTask && (
           <Card title="任务" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
               <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
@@ -271,7 +296,7 @@ class PropertyPanel extends Component {
         {showUserTask && (
           <Card title="用户任务" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
               <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
@@ -279,31 +304,34 @@ class PropertyPanel extends Component {
                 <Button type="dashed">编辑</Button>
               </Space>
 
-              <Radio.Group
-                value={elementInfo.approvalType}
-                onChange={(e) => {
-                  this.updateProperties({
-                    approvalType: e.target.value,
-                    approvalValue: "",
-                  });
-                  this.setState({
-                    approvalType: e.target.value,
-                  })
-                }}
-              >
-                <Radio value={"user"}>指定成员</Radio>
-                <Radio value={"role"}>指定角色</Radio>
-              </Radio.Group>
+              {/*<Radio.Group*/}
+              {/*  value={elementInfo.approvalType}*/}
+              {/*  onChange={(e) => {*/}
+              {/*    this.updateProperties({*/}
+              {/*      approvalType: e.target.value,*/}
+              {/*      approvalValue: "",*/}
+              {/*    });*/}
+              {/*    this.setState({*/}
+              {/*      approvalType: e.target.value,*/}
+              {/*    })*/}
+              {/*  }}*/}
+              {/*>*/}
+              {/*  <Radio value={"user"}>指定成员</Radio>*/}
+              {/*  <Radio value={"role"}>指定角色</Radio>*/}
+              {/*</Radio.Group>*/}
 
-              <span>{approvalTitle} 👇</span>
+              {/*<span>{approvalTitle} 👇</span>*/}
+              <span>选择审批人 👇</span>
               <Select
                 showSearch
                 style={{width: "100%"}}
-                value={elementInfo.approvalValue}
+                // value={elementInfo.approvalValue}
+                value={elementInfo["activiti:assignee"]}
                 onChange={(value) => {
                   this.updateProperties({
-                    approvalValue: value,
-                    "activiti:assignee": value,
+                    // approvalValue: value,
+                    // "activiti:assignee": value,
+                    "activiti:assignee": value
                   });
                 }}
               >
@@ -320,7 +348,7 @@ class PropertyPanel extends Component {
         {showSequenceFlow && (
           <Card title="流程线" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
               <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
@@ -336,7 +364,7 @@ class PropertyPanel extends Component {
         {showGateway && (
           <Card title="网关" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
               <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
@@ -354,7 +382,7 @@ class PropertyPanel extends Component {
         {showStartEnd && (
           <Card title="始末节点" bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear/>
+              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
               <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
