@@ -24,7 +24,7 @@ import {GenerateForm, GenerateFormRef} from "react-form-create";
 import BpmnView from "@/components/BpmnView";
 import {startDefinition} from "@/services/flow/instance";
 import moment from 'moment';
-import {ModalForm, ProFormRadio, ProFormText, ProFormTextArea} from "@ant-design/pro-form";
+import {ModalForm, ProFormRadio, ProFormTextArea} from "@ant-design/pro-form";
 
 const {Divider} = ProCard;
 
