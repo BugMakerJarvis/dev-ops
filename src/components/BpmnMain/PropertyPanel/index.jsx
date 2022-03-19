@@ -262,7 +262,7 @@ class PropertyPanel extends Component {
           <Card title="流程" bordered={false}>
             <Space direction="vertical" size="large">
               <Input addonBefore="流程标识 key" allowClear value={elementInfo.id}/>
-              <Input addonBefore="流程名称" allowClear/>
+              <Input addonBefore="流程名称" allowClear value={elementInfo.name}/>
               <Input addonBefore="节点描述" allowClear/>
               <Space>
                 <span>流程分类 👉</span>

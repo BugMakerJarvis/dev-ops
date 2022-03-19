@@ -48,6 +48,7 @@ export default (): React.ReactNode => {
   const generateFormRef = useRef<GenerateFormRef>(null);
   const [defFormContent, setDefFormContent] = useState<string>("");
   const [flowList, setFlowList] = useState<MODEL.TaskDetail[]>([]);
+  const [stepLength, setStepLength] = useState<number>(0);
   const [defFormValue, setDefFormValue] = useState<any>({});
   const [returnList, setReturnList] = useState<any[]>([]);
 
@@ -67,7 +68,9 @@ export default (): React.ReactNode => {
       setDefFormContent(JSON.stringify(d.formData));
       // 流转记录
       if (params.handleType === "info" || params.handleType === "handle") {
-        setFlowList(d.flowList);
+        const fl = d.flowList;
+        setStepLength(fl[0].duration === null ? fl.length - 1 : fl.length);
+        setFlowList(fl);
       }
     });
   }, []);
@@ -227,7 +230,7 @@ export default (): React.ReactNode => {
         headerBordered
         layout="center"
       >
-        <Steps direction="vertical" current={flowList.length - 1}>
+        <Steps direction="vertical" current={stepLength}>
           {flowList.reverse().map(f =>
             <Steps.Step key={f.taskId} title={f.taskName === null ? "未命名节点" : f.taskName}
                         description={
@@ -262,7 +265,7 @@ export default (): React.ReactNode => {
         headerBordered
         layout="default"
       >
-        <BpmnView deployId={params.deployId}/>
+        <BpmnView deployId={params.deployId} procInsId={params.procInsId}/>
       </ProCard>
     </div>
   );
