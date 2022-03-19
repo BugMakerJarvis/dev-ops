@@ -1,7 +1,9 @@
 import React, {useRef} from 'react';
 import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
-import {Tag} from "antd";
+import {Button, Space, Tag} from "antd";
 import {todoList} from "@/services/flow/task";
+import {EditOutlined} from "@ant-design/icons";
+import {history} from "@@/core/history";
 
 export default (): React.ReactNode => {
 
@@ -53,6 +55,12 @@ export default (): React.ReactNode => {
       dataIndex: "startUserName",
       align: "center",
       search: false,
+      render: (text, r) => [
+        <Space key="u">
+          <span>{r.startUserName}</span>
+          <Tag color="green">{r.startDeptName}</Tag>
+        </Space>
+      ],
     },
     {
       title: "接收时间",
@@ -61,14 +69,20 @@ export default (): React.ReactNode => {
       valueType: "dateTime",
       width: 160,
       align: "center",
-      sorter: true,
+      // sorter: true,
     },
     {
       title: '操作',
       key: 'option',
       valueType: 'option',
       align: "center",
-      render: (text, r) => []
+      render: (text, r) => [
+        <Button key="h" type="dashed" icon={<EditOutlined/>} onClick={() => {
+          history.push(`/flow/taskrecord?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&handleType=handle`)
+        }}>
+          处理
+        </Button>
+      ],
     },
   ]
 
@@ -78,6 +92,7 @@ export default (): React.ReactNode => {
         <ProTable
           actionRef={actionRef}
           columns={columns}
+          rowKey="taskId"
           toolbar={{
             title: '待办任务',
             tooltip: '😓',

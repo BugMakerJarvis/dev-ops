@@ -72,6 +72,7 @@ const FormList: React.FC<FormListProps> = (props) => {
             } else {
               message.error("配置表单失败");
             }
+            actionRef.current?.reload();
           } catch (e: any) {
             message.error(e.message);
           }
@@ -241,7 +242,7 @@ export default (): React.ReactNode => {
       valueType: "dateTime",
       width: 160,
       align: "center",
-      sorter: true,
+      // sorter: true,
     },
     {
       title: '操作',

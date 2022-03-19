@@ -65,7 +65,7 @@ const DefList: React.FC<DefListProps> = (props) => {
       render: (text, r) => [
         <Button key="1" type="primary" ghost onClick={() => {
           onVisibleChange(false);
-          history.push(`/flow/taskrecord?deployId=${r.deploymentId}&procDefId=${r.id}&newProcess=true`);
+          history.push(`/flow/taskrecord?deployId=${r.deploymentId}&procDefId=${r.id}&handleType=newProcess`);
         }}>发起流程</Button>
       ],
     }
@@ -157,7 +157,7 @@ export default (): React.ReactNode => {
       valueType: "dateTime",
       width: 160,
       align: "center",
-      sorter: true,
+      // sorter: true,
     },
     {
       title: "流程状态",
@@ -200,7 +200,7 @@ export default (): React.ReactNode => {
           return (
             <Menu>
               <Menu.Item key="1" icon={<InfoCircleOutlined/>} onClick={() => {
-                history.push(`/flow/taskrecord?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&newProcess=false`)
+                history.push(`/flow/taskrecord?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&handleType=info`)
               }}>
                 详情
               </Menu.Item>
