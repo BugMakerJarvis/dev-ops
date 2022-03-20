@@ -58,5 +58,5 @@ export default {
   'app.settings.open': 'Open',
   'app.settings.close': 'Close',
 
-  'app.copyright.produced': 'Produced by Hu',
+  'app.copyright.produced': 'Produced by IDK',
 };

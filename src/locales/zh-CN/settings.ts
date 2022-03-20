@@ -53,5 +53,5 @@ export default {
   'app.settings.open': '开',
   'app.settings.close': '关',
 
-  'app.copyright.produced': '胡图图出品',
+  'app.copyright.produced': '我不想赢辣',
 };
