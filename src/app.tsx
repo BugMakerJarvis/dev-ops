@@ -8,7 +8,6 @@ import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 // import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
-// import {message} from "antd";
 // import {Button} from "antd";
 
 // const isDev = process.env.NODE_ENV === 'development';
