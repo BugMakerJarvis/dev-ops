@@ -29,6 +29,7 @@ const Welcome: React.FC = () => {
               https://github.com/BugMakerJarvis/dev-ops
             </a>
           </ProCard>
+
           <ProCard title="Back end" type="inner" bordered>
             <Space direction="vertical">
               <a
@@ -68,6 +69,7 @@ const Welcome: React.FC = () => {
               </a>
             </Space>
           </ProCard>
+
           <ProCard title="Thanks to" type="inner" bordered>
             <Space direction="vertical">
               <a
