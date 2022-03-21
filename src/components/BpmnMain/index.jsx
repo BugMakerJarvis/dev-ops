@@ -9,6 +9,7 @@ import propertiesPanelModule from "bpmn-js-properties-panel";
 import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import {readXml} from "@/services/flow/definition";
 import {message} from "antd";
+import {getLocale} from "@@/plugin-locale/localeExports";
 
 class BpmnMain extends Component {
   /**
@@ -79,11 +80,11 @@ class BpmnMain extends Component {
       const canvas = document.getElementById('canvas');
       const djsPalette = canvas.children[0].children[1].children[4];
       const djsPalStyle = {
-        width: '130px',
+        width: getLocale() === 'en-US' ? '210px' : '130px',
         padding: '5px',
         background: 'white',
         left: '20px',
-        borderRadius: 0,
+        borderRadius: '5px',
       };
       for (var key in djsPalStyle) {
         djsPalette.style[key] = djsPalStyle[key];

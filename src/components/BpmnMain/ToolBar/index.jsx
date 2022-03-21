@@ -4,6 +4,9 @@ import "./index.less";
 import {saveXml} from "@/services/flow/definition";
 import {message} from "antd";
 import {withRouter} from 'react-router-dom';
+import {getIntl, getLocale} from "@@/plugin-locale/localeExports";
+
+const {messages} = getIntl(getLocale());
 
 @withRouter
 class BpmnToolBar extends Component {
@@ -140,7 +143,7 @@ class BpmnToolBar extends Component {
               type="file"
               onChange={this.onOpenFile}
             />
-            <button type="button" title="open" onClick={() => {
+            <button type="button" title={messages['component.bpmnMain.toolBar.open']} onClick={() => {
               this.file.click();
             }}>
               <i className={styles.open}/>
@@ -148,25 +151,26 @@ class BpmnToolBar extends Component {
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="撤销" onClick={this.onUndo}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.undo']} onClick={this.onUndo}>
               <i className={styles.undo}/>
             </button>
           </li>
 
           <li className={`${styles.control} ${styles.line}`}>
-            <button type="button" title="前进" onClick={this.onRedo}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.redo']} onClick={this.onRedo}>
               <i className={styles.redo}/>
             </button>
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="重置大小" onClick={() => this.onZoom()}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.reset-size']}
+                    onClick={() => this.onZoom()}>
               <i className={styles.zoom}/>
             </button>
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="放大" onClick={() => {
+            <button type="button" title={messages['component.bpmnMain.toolBar.zoom-in']} onClick={() => {
               this.onZoom(0.1)
             }}>
               <i className={styles.zoomIn}/>
@@ -174,7 +178,7 @@ class BpmnToolBar extends Component {
           </li>
 
           <li className={`${styles.control} ${styles.line}`}>
-            <button type="button" title="缩小" onClick={() => {
+            <button type="button" title={messages['component.bpmnMain.toolBar.zoom-out']} onClick={() => {
               this.onZoom(-0.1)
             }}>
               <i className={styles.zoomOut}/>
@@ -182,19 +186,21 @@ class BpmnToolBar extends Component {
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="保存" onClick={this.onSave}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.save']} onClick={this.onSave}>
               <i className={styles.save}/>
             </button>
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="下载BPMN20.XML文件" onClick={this.onDownloadXml}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.download-BPMN20.XML']}
+                    onClick={this.onDownloadXml}>
               <i className={styles.download}/>
             </button>
           </li>
 
           <li className={styles.control}>
-            <button type="button" title="下载SVG图片" onClick={this.onDownloadSvg}>
+            <button type="button" title={messages['component.bpmnMain.toolBar.download-SVG']}
+                    onClick={this.onDownloadSvg}>
               <i className={styles.image}/>
             </button>
           </li>

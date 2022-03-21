@@ -3,8 +3,11 @@ import {Input, Select, Form, Button, Divider, Switch, Card, Row, Col, Tag, Space
 import _ from "lodash";
 import styles from "./index.less";
 import {getRoleList, getUserList} from "@/services/rbac/rbac";
+import {getIntl, getLocale} from "@@/plugin-locale/localeExports";
 
 const {Option} = Select;
+
+const {messages} = getIntl(getLocale());
 
 /** 属性面板 */
 class PropertyPanel extends Component {
@@ -259,49 +262,53 @@ class PropertyPanel extends Component {
     return (
       <div className={styles.PropertyPanel}>
         {showProcess && (
-          <Card title="流程" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.process']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="流程标识 key" allowClear value={elementInfo.id}/>
-              <Input addonBefore="流程名称" allowClear value={elementInfo.name}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.process.key']} allowClear
+                     value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.process.name']} allowClear
+                     value={elementInfo.name}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>流程分类 👉</span>
+                <span>{messages['component.bpmnMain.propertyPanel.process.category']} 👉</span>
                 <Select placeholder="Please select...">
-                  <Option value="categoryOne">流程类别一</Option>
-                  <Option value="categoryTwo">流程类别二</Option>
+                  <Option value="categoryOne">Category_1</Option>
+                  <Option value="categoryTwo">Category_2</Option>
                 </Select>
               </Space>
               <Space>
-                <span>执行监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.execution-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
             </Space>
           </Card>
         )}
 
         {showTask && (
-          <Card title="任务" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.task']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
-              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.id']} allowClear value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.name']} allowClear value={elementInfo.name}
+                     onChange={this.updateLabel}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>任务监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.execution-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
             </Space>
           </Card>
         )}
 
         {showUserTask && (
-          <Card title="用户任务" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.user-task']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
-              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.id']} allowClear value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.name']} allowClear value={elementInfo.name}
+                     onChange={this.updateLabel}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>任务监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.task-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
 
               {/*<Radio.Group*/}
@@ -321,7 +328,7 @@ class PropertyPanel extends Component {
               {/*</Radio.Group>*/}
 
               {/*<span>{approvalTitle} 👇</span>*/}
-              <span>选择审批人 👇</span>
+              <span>{messages['component.bpmnMain.propertyPanel.user-task.assignee']} 👇</span>
               <Select
                 showSearch
                 style={{width: "100%"}}
@@ -346,50 +353,55 @@ class PropertyPanel extends Component {
         )}
 
         {showSequenceFlow && (
-          <Card title="流程线" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.sequence-flow']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
-              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.id']} allowClear value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.name']} allowClear value={elementInfo.name}
+                     onChange={this.updateLabel}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>执行监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.execution-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
-              <Input addonBefore="跳转条件" value={ConditionValue} onChange={this.updateCondition} allowClear/>
-              <Input addonBefore="跳过表达式" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.sequence-flow.condition-expression']}
+                     value={ConditionValue} onChange={this.updateCondition} allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.sequence-flow.skip-expression']}
+                     allowClear/>
             </Space>
           </Card>
         )}
 
         {showGateway && (
-          <Card title="网关" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.gateway']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
-              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.id']} allowClear value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.name']} allowClear value={elementInfo.name}
+                     onChange={this.updateLabel}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>任务监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.execution-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
               <Space>
-                <span>异步 👉</span>
-                <Switch checkedChildren="开启" unCheckedChildren="关闭"/>
+                <span>{messages['component.bpmnMain.propertyPanel.gateway.async']} 👉</span>
+                <Switch checkedChildren={messages['component.bpmnMain.propertyPanel.gateway.open']}
+                        unCheckedChildren={messages['component.bpmnMain.propertyPanel.gateway.close']}/>
               </Space>
             </Space>
           </Card>
         )}
 
         {showStartEnd && (
-          <Card title="始末节点" bordered={false}>
+          <Card title={messages['component.bpmnMain.propertyPanel.start-end']} bordered={false}>
             <Space direction="vertical" size="large">
-              <Input addonBefore="节点 id" allowClear value={elementInfo.id}/>
-              <Input addonBefore="节点名称" allowClear value={elementInfo.name} onChange={this.updateLabel}/>
-              <Input addonBefore="节点描述" allowClear/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.id']} allowClear value={elementInfo.id}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.name']} allowClear value={elementInfo.name}
+                     onChange={this.updateLabel}/>
+              <Input addonBefore={messages['component.bpmnMain.propertyPanel.description']} allowClear/>
               <Space>
-                <span>任务监听器 👉</span>
-                <Button type="dashed">编辑</Button>
+                <span>{messages['component.bpmnMain.propertyPanel.execution-listener']} 👉</span>
+                <Button type="dashed">{messages['component.bpmnMain.propertyPanel.edit']}</Button>
               </Space>
-              <Input addonBefore="发起人" allowClear/>
             </Space>
           </Card>
         )}

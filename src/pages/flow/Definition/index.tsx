@@ -313,7 +313,7 @@ export default (): React.ReactNode => {
               }}>删除</Menu.Item>
             </Menu>
           )
-        }} placement="bottomCenter">
+        }} placement="bottom">
           <Button type="dashed">
             <EllipsisOutlined/>
           </Button>
@@ -365,6 +365,7 @@ export default (): React.ReactNode => {
                 }}
               >
                 <Dragger multiple={false} maxCount={1} onChange={(v) => {
+                  // @ts-ignore
                   setUploadFile(v.file.originFileObj);
                 }}>
                   <p className="ant-upload-drag-icon">

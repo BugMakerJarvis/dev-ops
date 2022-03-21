@@ -258,6 +258,7 @@ class CommonProTable extends React.PureComponent<DynamicTableViewProps & Dynamic
     let uploadFile: Blob = new Blob();
 
     return <div>
+      {/*@ts-ignore*/}
       <ProTable actionRef={(a: ActionType) => {
         this.actionRef = a;
       }}
@@ -435,6 +436,7 @@ class CommonProTable extends React.PureComponent<DynamicTableViewProps & Dynamic
         <Divider/>
 
         <Dragger multiple={false} maxCount={1} onChange={(v) => {
+          // @ts-ignore
           uploadFile = v.file.originFileObj;
         }}>
           <p className="ant-upload-drag-icon">

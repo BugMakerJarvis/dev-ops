@@ -1,6 +1,11 @@
+import {getIntl, getLocale} from "@@/plugin-locale/localeExports";
+
 /**
  * 存储流程设计相关参数
  */
+
+const {messages} = getIntl(getLocale());
+
 export default class BpmData {
   constructor() {
     this.controls = [] // 设计器控件
@@ -11,50 +16,50 @@ export default class BpmData {
     this.controls = [
       {
         action: 'create.start-event',
-        title: '开始'
+        title: messages['component.bpmnMain.bpmData.start-event'],
       },
       {
         action: 'create.intermediate-event',
-        title: '中间'
+        title: messages['component.bpmnMain.bpmData.intermediate-event'],
       },
       {
         action: 'create.end-event',
-        title: '结束'
+        title: messages['component.bpmnMain.bpmData.end-event'],
       },
       {
         action: 'create.exclusive-gateway',
-        title: '网关'
+        title: messages['component.bpmnMain.bpmData.exclusive-gateway'],
       },
       {
         action: 'create.task',
-        title: '任务'
+        title: messages['component.bpmnMain.bpmData.task'],
       },
       {
         action: 'create.user-task',
-        title: '用户任务'
+        title: messages['component.bpmnMain.bpmData.user-task'],
       },
       {
         action: 'create.user-sign-task',
-        title: '会签任务'
+        title: messages['component.bpmnMain.bpmData.user-sign-task'],
       },
       {
         action: 'create.subprocess-expanded',
-        title: '子流程'
+        title: messages['component.bpmnMain.bpmData.subprocess-expanded'],
       },
       {
         action: 'create.data-object',
-        title: '数据对象'
+        title: messages['component.bpmnMain.bpmData.data-object'],
       },
       {
         action: 'create.data-store',
-        title: '数据存储'
+        title: messages['component.bpmnMain.bpmData.data-store'],
       }, {
         action: 'create.participant-expanded',
-        title: '扩展流程'
+        title: messages['component.bpmnMain.bpmData.participant-expanded'],
       },
       {
         action: 'create.group',
-        title: '分组'
+        title: messages['component.bpmnMain.bpmData.group'],
       }
     ]
   }
