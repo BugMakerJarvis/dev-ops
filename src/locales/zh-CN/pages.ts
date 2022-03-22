@@ -158,4 +158,56 @@ export default {
   'pages.dynamicTable.record.text.update': '更新记录',
 
   'pages.dynamicTable.button.confirm': '确认',
+
+  /**
+   * rbac
+   */
+  'pages.rbac.field.id': '用户编号',
+  'pages.rbac.field.username': '账号',
+  'pages.rbac.field.nickname': '昵称',
+  'pages.rbac.field.phone': '手机号码',
+  'pages.rbac.field.state': '状态',
+  'pages.rbac.field.roleName': '角色名称',
+  'pages.rbac.field.createTime': '创建时间',
+  'pages.rbac.field.updateTime': '更新时间',
+  'pages.rbac.field.option': '操作',
+  'pages.rbac.field.option.delete': '删除',
+
+  /**
+   * flow.definition
+   */
+  'pages.flow.definition': '流程定义',
+  'pages.flow.definition.field.deploymentId': '流程编号',
+  'pages.flow.definition.field.key': '流程标识',
+  'pages.flow.definition.field.category': '流程分类',
+  'pages.flow.definition.field.name': '流程名称',
+  'pages.flow.definition.field.formName': '业务表单',
+  'pages.flow.definition.field.version': '流程版本',
+  'pages.flow.definition.field.suspensionState': '状态',
+  'pages.flow.definition.field.suspensionState.activated': '已激活',
+  'pages.flow.definition.field.suspensionState.suspended': '已挂起',
+  'pages.flow.definition.field.deploymentTime': '部署时间',
+  'pages.flow.definition.field.option': '操作',
+  'pages.flow.definition.field.option.edit': '编辑',
+  'pages.flow.definition.field.option.formConfig': '配置表单',
+  'pages.flow.definition.field.option.suspend': '挂起',
+  'pages.flow.definition.field.option.activate': '激活',
+  'pages.flow.definition.field.option.delete': '删除',
+
+  'pages.flow.definition.action.input': '导入',
+  'pages.flow.definition.action.input.title': 'bpmn20.xml 文件导入',
+  'pages.flow.definition.action.input.confirm': '确认',
+  'pages.flow.definition.action.input.cancel': '取消',
+  'pages.flow.definition.action.input.tip.file': '提示：仅允许导入`bpmn20.xml`格式文件！',
+  'pages.flow.definition.action.input.tip.upload': '单击或拖动文件到此区域上传',
+  'pages.flow.definition.action.new': '新增',
+
+  'pages.flow.definition.response.input.success': '导入成功',
+  'pages.flow.definition.response.input.fail': '导入失败',
+  'pages.flow.definition.response.delete.success': '删除成功',
+  'pages.flow.definition.response.delete.fail': '删除失败',
+  'pages.flow.definition.response.activate.success': '激活成功',
+  'pages.flow.definition.response.activate.fail': '激活失败',
+  'pages.flow.definition.response.suspend.success': '挂起成功',
+  'pages.flow.definition.response.suspend.fail': '挂起失败',
 };

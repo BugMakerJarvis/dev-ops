@@ -141,8 +141,8 @@ export default {
   'pages.dynamicTable.warning.field.config': 'Fail to configure a field!',
   'pages.dynamicTable.warning.field.create': 'Fail to create a field!',
   'pages.dynamicTable.warning.field.enterFieldName': 'Please enter the field name！',
-  'pages.dynamicTable.success.table.create': 'Success to create a table!',
-  'pages.dynamicTable.success.table.update': 'Success to update a table!',
+  'pages.dynamicTable.success.table.create': 'Create successful!',
+  'pages.dynamicTable.success.table.update': 'Update successful!',
 
   /**
    *
@@ -161,4 +161,56 @@ export default {
   'pages.dynamicTable.record.text.update': 'Update Record',
 
   'pages.dynamicTable.button.confirm': 'Confirm',
+
+  /**
+   * rbac
+   */
+  'pages.rbac.field.id': 'ID',
+  'pages.rbac.field.username': 'User Name',
+  'pages.rbac.field.nickname': 'Nick Name',
+  'pages.rbac.field.phone': 'Phone',
+  'pages.rbac.field.state': 'State',
+  'pages.rbac.field.roleName': 'Role Name',
+  'pages.rbac.field.createTime': 'Create Time',
+  'pages.rbac.field.updateTime': 'Update Time',
+  'pages.rbac.field.option': 'Option',
+  'pages.rbac.field.option.delete': 'Delete',
+
+  /**
+   * flow.definition
+   */
+  'pages.flow.definition': 'Flow Definition',
+  'pages.flow.definition.field.deploymentId': 'Deploy ID',
+  'pages.flow.definition.field.key': 'Key',
+  'pages.flow.definition.field.category': 'Category',
+  'pages.flow.definition.field.name': 'Name',
+  'pages.flow.definition.field.formName': 'Form Name',
+  'pages.flow.definition.field.version': 'Version',
+  'pages.flow.definition.field.suspensionState': 'Suspension State',
+  'pages.flow.definition.field.suspensionState.activated': 'activated',
+  'pages.flow.definition.field.suspensionState.suspended': 'suspended',
+  'pages.flow.definition.field.deploymentTime': 'Deploy Time',
+  'pages.flow.definition.field.option': 'Option',
+  'pages.flow.definition.field.option.edit': 'Edit',
+  'pages.flow.definition.field.option.formConfig': 'Form Config',
+  'pages.flow.definition.field.option.suspend': 'Suspend',
+  'pages.flow.definition.field.option.activate': 'Activate',
+  'pages.flow.definition.field.option.delete': 'Delete',
+
+  'pages.flow.definition.action.input': 'Input',
+  'pages.flow.definition.action.input.title': 'bpmn20.xml File Import',
+  'pages.flow.definition.action.input.confirm': 'Confirm',
+  'pages.flow.definition.action.input.cancel': 'Cancel',
+  'pages.flow.definition.action.input.tip.file': 'Tip: Only `bpmn20.xml` file can be imported!',
+  'pages.flow.definition.action.input.tip.upload': 'Click or drag file to this area to upload',
+  'pages.flow.definition.action.new': 'New',
+
+  'pages.flow.definition.response.input.success': 'Input Successful!',
+  'pages.flow.definition.response.input.fail': 'Input Failed!',
+  'pages.flow.definition.response.delete.success': 'Delete Successful!',
+  'pages.flow.definition.response.delete.fail': 'Delete Failed!',
+  'pages.flow.definition.response.activate.success': 'Activate Successful!',
+  'pages.flow.definition.response.activate.fail': 'Activate Failed!',
+  'pages.flow.definition.response.suspend.success': 'Suspend Successful!',
+  'pages.flow.definition.response.suspend.fail': 'Suspend Failed!',
 };

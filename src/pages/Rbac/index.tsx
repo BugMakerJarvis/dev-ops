@@ -1,105 +1,107 @@
-import React, {useEffect, useRef, useState} from 'react';
-import type {ActionType, ProColumns} from '@ant-design/pro-table';
+import React, { useEffect, useRef, useState } from 'react';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
-import {Tree, Input} from 'antd';
-import {getOrgByName, getOrgTreeList, getUserListByParams} from "@/services/rbac/rbac";
+import { Tree, Input } from 'antd';
+import { getOrgByName, getOrgTreeList, getUserListByParams } from '@/services/rbac/rbac';
+import { getIntl, getLocale } from '@@/plugin-locale/localeExports';
 
-const {Search} = Input;
+const { Search } = Input;
+
+const { messages } = getIntl(getLocale());
 
 type User = {
-  id: number,
-  username: string,
-  nickname: string,
-  phone: string,
-  state: number,
-  orgId: number,
-  orgName: string,
-  roleId: number,
-  roleName: string,
-  createTime: number,
-  updateTime: number,
+  id: number;
+  username: string;
+  nickname: string;
+  phone: string;
+  state: number;
+  orgId: number;
+  orgName: string;
+  roleId: number;
+  roleName: string;
+  createTime: number;
+  updateTime: number;
 };
 
 type DetailListProps = {
-  selectedOrgId: number,
-  selectedOrgName: string,
+  selectedOrgId: number;
+  selectedOrgName: string;
 };
 
 const DetailList: React.FC<DetailListProps> = (props) => {
-
   const ref = useRef<ActionType>();
 
   const columns: ProColumns<User>[] = [
     {
-      title: '用户编号',
+      title: messages['pages.rbac.field.id'],
       key: 'id',
       dataIndex: 'id',
       valueType: 'digit',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '账号',
+      title: messages['pages.rbac.field.username'],
       key: 'username',
       dataIndex: 'username',
       valueType: 'text',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '昵称',
+      title: messages['pages.rbac.field.nickname'],
       key: 'nickname',
       dataIndex: 'nickname',
       valueType: 'text',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '手机号码',
+      title: messages['pages.rbac.field.phone'],
       key: 'phone',
       dataIndex: 'phone',
       valueType: 'text',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '状态',
+      title: messages['pages.rbac.field.state'],
       key: 'state',
       dataIndex: 'state',
       valueType: 'text',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '角色名称',
+      title: messages['pages.rbac.field.roleName'],
       key: 'roleName',
       dataIndex: 'roleName',
       valueType: 'text',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '创建时间',
+      title: messages['pages.rbac.field.createTime'],
       key: 'createdTime',
       dataIndex: 'createTime',
       valueType: 'dateTime',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '更新时间',
+      title: messages['pages.rbac.field.updateTime'],
       key: 'updateTime',
       dataIndex: 'updateTime',
       valueType: 'dateTime',
-      align: "center",
+      align: 'center',
     },
     {
-      title: '操作',
+      title: messages['pages.rbac.field.option'],
       key: 'option',
       valueType: 'option',
-      align: "center",
-      render: () => [<a key="a">删除</a>],
+      align: 'center',
+      render: () => [<a key="a">{messages['pages.rbac.field.option.delete']}</a>],
     },
   ];
 
   return (
     <ProTable<User>
       columns={columns}
-      params={{"orgId": props.selectedOrgId}}
+      params={{ orgId: props.selectedOrgId }}
       request={async (params) => {
         let userList: User[] = [];
         try {
@@ -107,17 +109,16 @@ const DetailList: React.FC<DetailListProps> = (props) => {
             userList = d.records;
             userList.forEach((user: any) => {
               if (user.id) {
-                user.key = user.id
+                user.key = user.id;
               }
-            })
-          })
-        } catch (e) {
-        }
+            });
+          });
+        } catch (e) {}
         return {
           data: userList,
           success: true,
           total: userList.length,
-        }
+        };
       }}
       actionRef={ref}
       pagination={{
@@ -130,7 +131,6 @@ const DetailList: React.FC<DetailListProps> = (props) => {
     />
   );
 };
-
 
 export default (): React.ReactNode => {
   const [treeData, setTreeData] = useState<any[]>([]);
@@ -159,10 +159,10 @@ export default (): React.ReactNode => {
 
   useEffect(() => {
     // 获取左侧组织树状结构
-    getOrgTreeList().then(d => {
+    getOrgTreeList().then((d) => {
       copyTransFun(d);
       setTreeData(d);
-    })
+    });
   }, []);
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
@@ -184,7 +184,7 @@ export default (): React.ReactNode => {
         node: {
           key: d.id,
           title: d.name,
-        }
+        },
       });
     });
   };
@@ -193,7 +193,7 @@ export default (): React.ReactNode => {
     <div>
       <ProCard split="vertical">
         <ProCard colSpan="384px">
-          <Search style={{marginBottom: 8}} placeholder="Search" onSearch={onSearch}/>
+          <Search style={{ marginBottom: 8 }} placeholder="Search" onSearch={onSearch} />
           <Tree
             onExpand={onExpand}
             expandedKeys={expandedKeys}
@@ -204,9 +204,9 @@ export default (): React.ReactNode => {
           />
         </ProCard>
         <ProCard>
-          <DetailList selectedOrgId={selectedOrgId} selectedOrgName={selectedOrgName}/>
+          <DetailList selectedOrgId={selectedOrgId} selectedOrgName={selectedOrgName} />
         </ProCard>
       </ProCard>
     </div>
   );
-}
+};
