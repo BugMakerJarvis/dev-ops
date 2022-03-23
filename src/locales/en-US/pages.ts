@@ -185,6 +185,7 @@ export default {
   'pages.flow.definition.field.category': 'Category',
   'pages.flow.definition.field.name': 'Name',
   'pages.flow.definition.field.formName': 'Form Name',
+  'pages.flow.definition.field.formName.notExist': 'No Form',
   'pages.flow.definition.field.version': 'Version',
   'pages.flow.definition.field.suspensionState': 'Suspension State',
   'pages.flow.definition.field.suspensionState.activated': 'activated',
@@ -213,4 +214,27 @@ export default {
   'pages.flow.definition.response.activate.fail': 'Activate Failed!',
   'pages.flow.definition.response.suspend.success': 'Suspend Successful!',
   'pages.flow.definition.response.suspend.fail': 'Suspend Failed!',
+  'pages.flow.definition.response.form.success': 'Config Form Successful!',
+  'pages.flow.definition.response.form.fail': 'Config Form Failed!',
+
+  'pages.flow.definition.button.confirm': 'Confirm',
+
+  /**
+   * flow.form
+   */
+  'pages.flow.form': 'Form Management',
+  'pages.flow.form.field.formId': 'Form ID',
+  'pages.flow.form.field.formName': 'Form Name',
+  'pages.flow.form.field.remark': 'Remark',
+  'pages.flow.form.field.option': 'Option',
+  'pages.flow.form.field.option.detail': 'View Detail',
+  'pages.flow.form.field.option.edit': 'Edit',
+  'pages.flow.form.field.option.delete': 'Delete',
+
+  'pages.flow.form.detail': 'Form Detail',
+  'pages.flow.form.new': 'New',
+
+  'pages.flow.form.response.submit.success': 'Submit Successful!',
+  'pages.flow.form.response.delete.success': 'Delete Successful!',
+  'pages.flow.form.response.delete.fail': 'Delete Failed!',
 };

@@ -50,21 +50,21 @@ const FormList: React.FC<FormListProps> = (props) => {
 
   const columns: ProColumns<FormDetail>[] = [
     {
-      title: '表单编号',
+      title: messages['pages.flow.form.field.formId'],
       key: 'formId',
       dataIndex: 'formId',
       align: 'center',
       search: false,
     },
     {
-      title: '表单名称',
+      title: messages['pages.flow.form.field.formName'],
       key: 'formName',
       dataIndex: 'formName',
       align: 'center',
       search: false,
     },
     {
-      title: '操作',
+      title: messages['pages.flow.form.field.option'],
       key: 'option',
       valueType: 'option',
       align: 'center',
@@ -81,9 +81,9 @@ const FormList: React.FC<FormListProps> = (props) => {
                 deployId: deploymentId,
               });
               if (res === 1) {
-                message.success('配置表单成功');
+                message.success(messages['pages.flow.definition.response.form.success']);
               } else {
-                message.error('配置表单失败');
+                message.error(messages['pages.flow.definition.response.form.fail']);
               }
               actionRef.current?.reload();
             } catch (e: any) {
@@ -91,7 +91,7 @@ const FormList: React.FC<FormListProps> = (props) => {
             }
           }}
         >
-          确认
+          {messages['pages.flow.definition.button.confirm']}
         </Button>,
       ],
     },
@@ -129,7 +129,7 @@ const FormList: React.FC<FormListProps> = (props) => {
             },
           };
         }}
-      ></ProTable>
+      />
     </div>
   );
 };
@@ -206,7 +206,9 @@ export default (): React.ReactNode => {
       render: (text, r) => [
         <div key="f">
           {r.formName === null ? (
-            <span style={{ fontWeight: 'bold' }}>暂无表单</span>
+            <span style={{ fontWeight: 'bold' }}>
+              {messages['pages.flow.definition.field.formName.notExist']}
+            </span>
           ) : (
             <div>
               <a
@@ -523,7 +525,7 @@ export default (): React.ReactNode => {
               };
             }
           }}
-        ></ProTable>
+        />
       </div>
     </div>
   );

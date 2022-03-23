@@ -182,6 +182,7 @@ export default {
   'pages.flow.definition.field.category': '流程分类',
   'pages.flow.definition.field.name': '流程名称',
   'pages.flow.definition.field.formName': '业务表单',
+  'pages.flow.definition.field.formName.notExist': '暂无表单',
   'pages.flow.definition.field.version': '流程版本',
   'pages.flow.definition.field.suspensionState': '状态',
   'pages.flow.definition.field.suspensionState.activated': '已激活',
@@ -210,4 +211,27 @@ export default {
   'pages.flow.definition.response.activate.fail': '激活失败',
   'pages.flow.definition.response.suspend.success': '挂起成功',
   'pages.flow.definition.response.suspend.fail': '挂起失败',
+  'pages.flow.definition.response.form.success': '配置表单成功',
+  'pages.flow.definition.response.form.fail': '配置表单失败',
+
+  'pages.flow.definition.button.confirm': '确认',
+
+  /**
+   * flow.form
+   */
+  'pages.flow.form': '表单详情',
+  'pages.flow.form.field.formId': '表单编号',
+  'pages.flow.form.field.formName': '表单名称',
+  'pages.flow.form.field.remark': '备注',
+  'pages.flow.form.field.option': '操作',
+  'pages.flow.form.field.option.detail': '详情',
+  'pages.flow.form.field.option.edit': '编辑',
+  'pages.flow.form.field.option.delete': '删除',
+
+  'pages.flow.form.detail': '表单详情',
+  'pages.flow.form.new': '新增',
+
+  'pages.flow.form.response.submit.success': '提交成功',
+  'pages.flow.form.response.delete.success': '删除成功',
+  'pages.flow.form.response.delete.fail': '删除失败',
 };
