@@ -1,21 +1,25 @@
-import React, {useRef, useState} from 'react';
-import ProTable, {ActionType, ProColumns} from '@ant-design/pro-table';
-import {Tag, Modal, Button, Dropdown, Menu, message} from "antd";
-import {myProcess, stopProcess} from "@/services/flow/task";
-import {definitionList} from "@/services/flow/definition";
+import React, { useRef, useState } from 'react';
+import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
+import { Tag, Modal, Button, Dropdown, Menu, message } from 'antd';
+import { myProcess, stopProcess } from '@/services/flow/task';
+import { definitionList } from '@/services/flow/definition';
 import {
   CloseCircleOutlined,
   DeleteOutlined,
-  EllipsisOutlined, InfoCircleOutlined,
-  PlusOutlined
-} from "@ant-design/icons";
-import {history} from "@@/core/history";
-import {deleteInstance} from "@/services/flow/instance";
+  EllipsisOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import { history } from '@@/core/history';
+import { deleteInstance } from '@/services/flow/instance';
+import { getIntl, getLocale } from '@@/plugin-locale/localeExports';
+
+const { messages } = getIntl(getLocale());
 
 type DefDetail = {
-  deploymentId: string,
-  id: string,
-  name: string,
+  deploymentId: string;
+  id: string;
+  name: string;
   version: number;
   category: string;
 };
@@ -25,50 +29,63 @@ type DefListProps = {
 };
 
 const DefList: React.FC<DefListProps> = (props) => {
-  const {onVisibleChange} = props;
+  const { onVisibleChange } = props;
 
   const actionRef = useRef<ActionType>();
 
   const columns: ProColumns<DefDetail>[] = [
     {
-      title: "流程名称",
-      key: "name",
-      dataIndex: "name",
+      title: messages['pages.flow.definition.field.name'],
+      key: 'name',
+      dataIndex: 'name',
       width: 190,
-      align: "center",
+      align: 'center',
       search: false,
     },
     {
-      title: "流程版本",
-      key: "version",
-      dataIndex: "version",
-      valueType: "digit",
+      title: messages['pages.flow.definition.field.version'],
+      key: 'version',
+      dataIndex: 'version',
+      valueType: 'digit',
       width: 190,
-      align: "center",
+      align: 'center',
       search: false,
-      render: (text, r) => [<Tag key="v" color="yellow">v{r.version}</Tag>],
+      render: (text, r) => [
+        <Tag key="v" color="yellow">
+          v{r.version}
+        </Tag>,
+      ],
     },
     {
-      title: "流程分类",
-      key: "category",
-      dataIndex: "category",
+      title: messages['pages.flow.definition.field.category'],
+      key: 'category',
+      dataIndex: 'category',
       width: 190,
-      align: "center",
+      align: 'center',
       search: false,
     },
     {
-      title: '操作',
+      title: messages['pages.flow.definition.field.option'],
       key: 'option',
       valueType: 'option',
       width: 190,
-      align: "center",
+      align: 'center',
       render: (text, r) => [
-        <Button key="1" type="primary" ghost onClick={() => {
-          onVisibleChange(false);
-          history.push(`/flow/taskrecord?deployId=${r.deploymentId}&procDefId=${r.id}&handleType=newProcess`);
-        }}>发起流程</Button>
+        <Button
+          key="1"
+          type="primary"
+          ghost
+          onClick={() => {
+            onVisibleChange(false);
+            history.push(
+              `/flow/taskrecord?deployId=${r.deploymentId}&procDefId=${r.id}&handleType=newProcess`,
+            );
+          }}
+        >
+          {messages['pages.flow.myprocess.field.option.launch']}
+        </Button>,
       ],
-    }
+    },
   ];
 
   return (
@@ -82,30 +99,33 @@ const DefList: React.FC<DefListProps> = (props) => {
         request={async (params) => {
           let list: DefDetail[] = [];
           try {
-            await definitionList(1, params.pageSize ? params.pageSize : 10, params.name ? params.name : "", params.deployTime ? params.deployTime : "").then((d) => {
+            await definitionList(
+              1,
+              params.pageSize ? params.pageSize : 10,
+              params.name ? params.name : '',
+              params.deployTime ? params.deployTime : '',
+            ).then((d) => {
               list = d.records;
-            })
+            });
             return {
               data: list,
               success: true,
               total: list.length,
-            }
+            };
           } catch (e) {
             return {
               data: [],
               success: false,
               total: 0,
-            }
+            };
           }
         }}
-      >
-      </ProTable>
+      ></ProTable>
     </div>
-  )
-}
+  );
+};
 
 export default (): React.ReactNode => {
-
   const actionRef = useRef<ActionType>();
 
   const [isDefListModalVisible, setIsDefListModalVisible] = useState<boolean>(false);
@@ -115,188 +135,236 @@ export default (): React.ReactNode => {
       dataIndex: 'index',
       valueType: 'indexBorder',
       width: 48,
-      align: "center",
+      align: 'center',
     },
     {
-      title: "流程编号",
-      key: "deployId",
-      dataIndex: "deployId",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.deployId'],
+      key: 'deployId',
+      dataIndex: 'deployId',
+      align: 'center',
       copyable: true,
       // ellipsis: true,
       search: false,
       width: 300,
     },
     {
-      title: "流程名称",
-      key: "procDefName",
-      dataIndex: "procDefName",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.procDefName'],
+      key: 'procDefName',
+      dataIndex: 'procDefName',
+      align: 'center',
     },
     {
-      title: "流程分类",
-      key: "category",
-      dataIndex: "category",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.category'],
+      key: 'category',
+      dataIndex: 'category',
+      align: 'center',
       search: false,
     },
     {
-      title: "流程版本",
-      key: "version",
-      dataIndex: "version",
-      valueType: "digit",
+      title: messages['pages.flow.myprocess.field.version'],
+      key: 'version',
+      dataIndex: 'version',
+      valueType: 'digit',
       width: 100,
-      align: "center",
+      align: 'center',
       search: false,
-      render: (text, r) => [<Tag key="v" color="yellow">v{r.procDefVersion}</Tag>],
+      render: (text, r) => [
+        <Tag key="v" color="yellow">
+          v{r.procDefVersion}
+        </Tag>,
+      ],
     },
     {
-      title: "提交时间",
-      key: "createTime",
-      dataIndex: "createTime",
-      valueType: "dateTime",
+      title: messages['pages.flow.myprocess.field.createTime'],
+      key: 'createTime',
+      dataIndex: 'createTime',
+      valueType: 'dateTime',
       width: 160,
-      align: "center",
+      align: 'center',
       // sorter: true,
     },
     {
-      title: "流程状态",
-      key: "procStatus",
-      dataIndex: "procStatus",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.procStatus'],
+      key: 'procStatus',
+      dataIndex: 'procStatus',
+      align: 'center',
       search: false,
-      render: (text, r) => [r.finishTime === null ? <Tag key="v" color="green">进行中</Tag> :
-        <Tag key="v" color="red">已完成</Tag>],
+      render: (text, r) => [
+        r.finishTime === null ? (
+          <Tag key="v" color="green">
+            {messages['pages.flow.myprocess.field.procStatus.ongoing']}
+          </Tag>
+        ) : (
+          <Tag key="v" color="red">
+            {messages['pages.flow.myprocess.field.procStatus.finished']}
+          </Tag>
+        ),
+      ],
     },
     {
-      title: "耗时",
-      key: "duration",
-      dataIndex: "duration",
+      title: messages['pages.flow.myprocess.field.duration'],
+      key: 'duration',
+      dataIndex: 'duration',
       width: 160,
-      align: "center",
+      align: 'center',
       search: false,
     },
     {
-      title: "当前节点",
-      key: "taskName",
-      dataIndex: "taskName",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.taskName'],
+      key: 'taskName',
+      dataIndex: 'taskName',
+      align: 'center',
       search: false,
     },
     {
-      title: "办理",
-      key: "assigneeName",
-      dataIndex: "assigneeName",
-      align: "center",
+      title: messages['pages.flow.myprocess.field.assigneeName'],
+      key: 'assigneeName',
+      dataIndex: 'assigneeName',
+      align: 'center',
       search: false,
     },
     {
-      title: '操作',
+      title: messages['pages.flow.myprocess.field.option'],
       key: 'option',
       valueType: 'option',
-      align: "center",
+      align: 'center',
       render: (text, r) => [
-        <Dropdown key="menu" overlay={() => {
-          return (
-            <Menu>
-              <Menu.Item key="1" icon={<InfoCircleOutlined/>} onClick={() => {
-                history.push(`/flow/taskrecord?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&handleType=info`)
-              }}>
-                详情
-              </Menu.Item>
+        <Dropdown
+          key="menu"
+          overlay={() => {
+            return (
+              <Menu>
+                <Menu.Item
+                  key="1"
+                  icon={<InfoCircleOutlined />}
+                  onClick={() => {
+                    history.push(
+                      `/flow/taskrecord?procInsId=${r.procInsId}&deployId=${r.deployId}&taskId=${r.taskId}&handleType=info`,
+                    );
+                  }}
+                >
+                  {messages['pages.flow.myprocess.field.option.detail']}
+                </Menu.Item>
 
-              <Menu.Item key="2" icon={<CloseCircleOutlined/>} onClick={async () => {
-                try {
-                  const res = await stopProcess({"instanceId": r.procInsId});
-                  if (res) {
-                    message.success("取消申请成功");
-                  } else {
-                    message.error("取消申请失败");
-                  }
-                  actionRef.current?.reload();
-                } catch (e: any) {
-                  // message.error(e.message);
-                }
-              }}>
-                取消申请
-              </Menu.Item>
+                <Menu.Item
+                  key="2"
+                  icon={<CloseCircleOutlined />}
+                  onClick={async () => {
+                    try {
+                      const res = await stopProcess({ instanceId: r.procInsId });
+                      if (res) {
+                        message.success(messages['pages.flow.myprocess.response.cancel.success']);
+                      } else {
+                        message.error(messages['pages.flow.myprocess.response.cancel.fail']);
+                      }
+                      actionRef.current?.reload();
+                    } catch (e: any) {
+                      // message.error(e.message);
+                    }
+                  }}
+                >
+                  {messages['pages.flow.myprocess.field.option.cancel']}
+                </Menu.Item>
 
-              <Menu.Item key="3" icon={<DeleteOutlined/>} onClick={async () => {
-                try {
-                  const res = await deleteInstance(r.procInsId, "");
-                  if (res) {
-                    message.success(`删除流程实例 ${r.procInsId} 成功`);
-                  } else {
-                    message.success(`删除流程实例 ${r.procInsId} 失败`);
-                  }
-                  actionRef.current?.reload();
-                } catch (e: any) {
-                  message.error(e.message);
-                }
-              }}>
-                删除
-              </Menu.Item>
-            </Menu>
-          )
-        }} placement="bottomCenter">
+                <Menu.Item
+                  key="3"
+                  icon={<DeleteOutlined />}
+                  onClick={async () => {
+                    try {
+                      const res = await deleteInstance(r.procInsId, '');
+                      if (res) {
+                        message.success(
+                          messages['pages.flow.myprocess.response.delete'] +
+                            ` ${r.procInsId} ` +
+                            messages['pages.flow.myprocess.response.delete.success'],
+                        );
+                      } else {
+                        message.success(
+                          messages['pages.flow.myprocess.response.delete'] +
+                            ` ${r.procInsId} ` +
+                            messages['pages.flow.myprocess.response.delete.fail'],
+                        );
+                      }
+                      actionRef.current?.reload();
+                    } catch (e: any) {
+                      message.error(e.message);
+                    }
+                  }}
+                >
+                  {messages['pages.flow.myprocess.field.option.delete']}
+                </Menu.Item>
+              </Menu>
+            );
+          }}
+          placement="bottomCenter"
+        >
           <Button type="dashed">
-            <EllipsisOutlined/>
+            <EllipsisOutlined />
           </Button>
         </Dropdown>,
       ],
-    }
+    },
   ];
-
 
   return (
     <div>
-      <div style={{marginBottom: 10}}>
+      <div style={{ marginBottom: 10 }}>
         <ProTable
           actionRef={actionRef}
           columns={columns}
           rowKey="procInsId"
+          search={{ labelWidth: 'auto' }}
           toolbar={{
-            title: '我的流程',
+            title: messages['pages.flow.myprocess'],
             tooltip: '😓',
             actions: [
               <div>
-                <Button type="primary" onClick={() => setIsDefListModalVisible(true)}
-                        icon={<PlusOutlined/>}>新增流程</Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsDefListModalVisible(true)}
+                  icon={<PlusOutlined />}
+                >
+                  {messages['pages.flow.myprocess.action.new']}
+                </Button>
                 <Modal
                   visible={isDefListModalVisible}
-                  width={window.screen.width * 3 / 5}
+                  width={(window.screen.width * 3) / 5}
                   onCancel={() => setIsDefListModalVisible(false)}
                   footer={null}
                 >
-                  <DefList onVisibleChange={(visible) => {
-                    setIsDefListModalVisible(visible);
-                    actionRef.current?.reload();
-                  }}/>
+                  <DefList
+                    onVisibleChange={(visible) => {
+                      setIsDefListModalVisible(visible);
+                      actionRef.current?.reload();
+                    }}
+                  />
                 </Modal>
-              </div>
+              </div>,
             ],
           }}
           request={async (params) => {
             let list: MODEL.TaskDetail[] = [];
             try {
-              await myProcess(params.pageNum ? params.pageNum : 1, params.pageSize ? params.pageSize : 10).then((d) => {
+              await myProcess(
+                params.pageNum ? params.pageNum : 1,
+                params.pageSize ? params.pageSize : 10,
+              ).then((d) => {
                 list = d.records;
-              })
+              });
               return {
                 data: list,
                 success: true,
                 total: list.length,
-              }
+              };
             } catch (e) {
               return {
                 data: [],
                 success: false,
                 total: 0,
-              }
+              };
             }
           }}
-        >
-        </ProTable>
+        ></ProTable>
       </div>
     </div>
   );

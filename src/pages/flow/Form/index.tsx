@@ -123,6 +123,7 @@ export default (): React.ReactNode => {
           actionRef={actionRef}
           columns={columns}
           rowKey="formId"
+          search={{ labelWidth: 'auto' }}
           toolbar={{
             title: messages['pages.flow.form'],
             tooltip: '😓',
@@ -154,7 +155,7 @@ export default (): React.ReactNode => {
               total: list.length,
             };
           }}
-        ></ProTable>
+        />
       </div>
     </div>
   );

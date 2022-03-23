@@ -234,4 +234,60 @@ export default {
   'pages.flow.form.response.submit.success': '提交成功',
   'pages.flow.form.response.delete.success': '删除成功',
   'pages.flow.form.response.delete.fail': '删除失败',
+
+  /**
+   * flow.myprocess
+   */
+  'pages.flow.myprocess': '我的流程',
+  'pages.flow.myprocess.field.deployId': '流程编号',
+  'pages.flow.myprocess.field.procDefName': '流程名称',
+  'pages.flow.myprocess.field.category': '流程分类',
+  'pages.flow.myprocess.field.version': '流程版本',
+  'pages.flow.myprocess.field.createTime': '提交时间',
+  'pages.flow.myprocess.field.procStatus': '流程状态',
+  'pages.flow.myprocess.field.procStatus.finished': '已完成',
+  'pages.flow.myprocess.field.procStatus.ongoing': '进行中',
+  'pages.flow.myprocess.field.duration': '耗时',
+  'pages.flow.myprocess.field.taskName': '当前节点',
+  'pages.flow.myprocess.field.assigneeName': '办理',
+  'pages.flow.myprocess.field.option': '操作',
+  'pages.flow.myprocess.field.option.launch': '发起流程',
+  'pages.flow.myprocess.field.option.detail': '详情',
+  'pages.flow.myprocess.field.option.cancel': '取消申请',
+  'pages.flow.myprocess.field.option.delete': '删除',
+  'pages.flow.myprocess.action.new': '新增流程',
+
+  'pages.flow.myprocess.response.cancel.success': '取消申请成功',
+  'pages.flow.myprocess.response.cancel.fail': '取消申请失败',
+  'pages.flow.myprocess.response.delete': '删除流程实例',
+  'pages.flow.myprocess.response.delete.success': '成功',
+  'pages.flow.myprocess.response.delete.fail': '失败',
+
+  /**
+   * flow.finished
+   */
+  'pages.flow.finished': '已办任务',
+  'pages.flow.finished.field.taskId': '任务编号',
+  'pages.flow.finished.field.procDefName': '流程名称',
+  'pages.flow.finished.field.taskName': '任务节点',
+  'pages.flow.finished.field.startUserName': '流程发起人',
+  'pages.flow.finished.field.createTime': '接收时间',
+  'pages.flow.finished.field.finishTime': '审批时间',
+  'pages.flow.finished.field.duration': '耗时',
+  'pages.flow.finished.field.option': '操作',
+  'pages.flow.finished.field.option.flowDoc': '流转记录',
+  'pages.flow.finished.field.option.withdraw': '撤回',
+
+  /**
+   * flow._todo
+   */
+  'pages.flow.todo': 'Todo Task',
+  'pages.flow.todo.field.taskId': '任务编号',
+  'pages.flow.todo.field.procDefName': '流程名称',
+  'pages.flow.todo.field.taskName': '任务节点',
+  'pages.flow.todo.field.version': '流程版本',
+  'pages.flow.todo.field.startUserName': '流程发起人',
+  'pages.flow.todo.field.createTime': '接收时间',
+  'pages.flow.todo.field.option': '操作',
+  'pages.flow.todo.field.option.handle': '处理',
 };

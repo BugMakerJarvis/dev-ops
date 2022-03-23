@@ -415,6 +415,7 @@ export default (): React.ReactNode => {
           actionRef={actionRef}
           columns={columns}
           rowKey="deploymentId"
+          search={{ labelWidth: 'auto' }}
           toolbar={{
             title: messages['pages.flow.definition'],
             tooltip: '😓',

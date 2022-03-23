@@ -183,7 +183,7 @@ export default {
   'pages.flow.definition.field.deploymentId': 'Deploy ID',
   'pages.flow.definition.field.key': 'Key',
   'pages.flow.definition.field.category': 'Category',
-  'pages.flow.definition.field.name': 'Name',
+  'pages.flow.definition.field.name': 'Process Definition Name',
   'pages.flow.definition.field.formName': 'Form Name',
   'pages.flow.definition.field.formName.notExist': 'No Form',
   'pages.flow.definition.field.version': 'Version',
@@ -237,4 +237,60 @@ export default {
   'pages.flow.form.response.submit.success': 'Submit Successful!',
   'pages.flow.form.response.delete.success': 'Delete Successful!',
   'pages.flow.form.response.delete.fail': 'Delete Failed!',
+
+  /**
+   * flow.myprocess
+   */
+  'pages.flow.myprocess': 'My Process',
+  'pages.flow.myprocess.field.deployId': 'Deploy ID',
+  'pages.flow.myprocess.field.procDefName': 'Process Definition Name',
+  'pages.flow.myprocess.field.category': 'Category',
+  'pages.flow.myprocess.field.version': 'Version',
+  'pages.flow.myprocess.field.createTime': 'Create Time',
+  'pages.flow.myprocess.field.procStatus': 'Process Status',
+  'pages.flow.myprocess.field.procStatus.finished': 'Finished',
+  'pages.flow.myprocess.field.procStatus.ongoing': 'Ongoing',
+  'pages.flow.myprocess.field.duration': 'Duration',
+  'pages.flow.myprocess.field.taskName': 'Task Name',
+  'pages.flow.myprocess.field.assigneeName': 'Assignee Name',
+  'pages.flow.myprocess.field.option': 'Option',
+  'pages.flow.myprocess.field.option.launch': 'Launch Process',
+  'pages.flow.myprocess.field.option.detail': 'View Detail',
+  'pages.flow.myprocess.field.option.cancel': 'Cancel Application',
+  'pages.flow.myprocess.field.option.delete': 'Delete',
+  'pages.flow.myprocess.action.new': 'New',
+
+  'pages.flow.myprocess.response.cancel.success': 'Cancel Successful!',
+  'pages.flow.myprocess.response.cancel.fail': 'Cancel Failed!',
+  'pages.flow.myprocess.response.delete': 'Delete Process Instance',
+  'pages.flow.myprocess.response.delete.success': 'Successful!',
+  'pages.flow.myprocess.response.delete.fail': 'Failed!',
+
+  /**
+   * flow.finished
+   */
+  'pages.flow.finished': 'Finished Task',
+  'pages.flow.finished.field.taskId': 'Task ID',
+  'pages.flow.finished.field.procDefName': 'Process Definition Name',
+  'pages.flow.finished.field.taskName': 'Task Name',
+  'pages.flow.finished.field.startUserName': 'Start User Name',
+  'pages.flow.finished.field.createTime': 'Create Time',
+  'pages.flow.finished.field.finishTime': 'Finish Time',
+  'pages.flow.finished.field.duration': 'Duration',
+  'pages.flow.finished.field.option': 'Option',
+  'pages.flow.finished.field.option.flowDoc': 'Flow Doc',
+  'pages.flow.finished.field.option.withdraw': 'Withdraw',
+
+  /**
+   * flow._todo
+   */
+  'pages.flow.todo': 'Todo Task',
+  'pages.flow.todo.field.taskId': 'Task ID',
+  'pages.flow.todo.field.procDefName': 'Process Definition Name',
+  'pages.flow.todo.field.taskName': 'Task Name',
+  'pages.flow.todo.field.version': 'Version',
+  'pages.flow.todo.field.startUserName': 'Start User Name',
+  'pages.flow.todo.field.createTime': 'Create Time',
+  'pages.flow.todo.field.option': 'Option',
+  'pages.flow.todo.field.option.handle': 'Handle',
 };
