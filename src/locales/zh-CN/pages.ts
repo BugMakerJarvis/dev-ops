@@ -290,4 +290,51 @@ export default {
   'pages.flow.todo.field.createTime': '接收时间',
   'pages.flow.todo.field.option': '操作',
   'pages.flow.todo.field.option.handle': '处理',
+
+  /**
+   * flow.handletask
+   */
+  'pages.flow.handletask.title.basic': '基础信息',
+  'pages.flow.handletask.title.approve': '审批流程',
+  'pages.flow.handletask.title.return': '退回流程',
+  'pages.flow.handletask.title.reject': '驳回流程',
+  'pages.flow.handletask.title.diagram': '流程图',
+  'pages.flow.handletask.title.record': '审批记录',
+  'pages.flow.handletask.title.record.unknown': '未知',
+  'pages.flow.handletask.title.record.anonymous': '未命名节点',
+  'pages.flow.handletask.title.record.assigneeName': '实际办理',
+  'pages.flow.handletask.title.record.createTime': '接收时间',
+  'pages.flow.handletask.title.record.finishTime': '办结时间',
+  'pages.flow.handletask.title.record.duration': '耗时',
+
+  'pages.flow.handletask.button.goBack': '返回',
+  'pages.flow.handletask.button.submit': '提交',
+  'pages.flow.handletask.button.reset': '重置',
+  'pages.flow.handletask.button.approve': '审批',
+  'pages.flow.handletask.button.return': '退回',
+  'pages.flow.handletask.button.reject': '驳回',
+  'pages.flow.handletask.button.return.node': '退回节点',
+
+  'pages.flow.handletask.comment.approve': '审批意见',
+  'pages.flow.handletask.comment.return': '退回意见',
+  'pages.flow.handletask.comment.reject': '驳回意见',
+
+  'pages.flow.handletask.response.submit.success': '启动流程成功',
+  'pages.flow.handletask.response.submit.fail': '启动流程失败',
+  'pages.flow.handletask.response.approve.success': '审批成功',
+  'pages.flow.handletask.response.approve.fail': '审批失败',
+  'pages.flow.handletask.response.return.success': '退回成功',
+  'pages.flow.handletask.response.return.fail': '退回失败',
+  'pages.flow.handletask.response.reject.success': '驳回成功',
+  'pages.flow.handletask.response.reject.fail': '驳回失败',
+
+  /**
+   * flow.formdesigner
+   */
+  'pages.flow.formdesigner.title': '表单设计',
+  'pages.flow.formdesigner.label.formName': '表单名称',
+  'pages.flow.formdesigner.label.remark': '备注',
+  'pages.flow.formdesigner.button.save': '保存表单',
+  'pages.flow.formdesigner.response.save.success': '保存成功',
+  'pages.flow.formdesigner.response.save.fail': '保存失败',
 };

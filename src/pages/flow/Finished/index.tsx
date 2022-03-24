@@ -152,7 +152,7 @@ export default (): React.ReactNode => {
               };
             }
           }}
-        ></ProTable>
+        />
       </div>
     </div>
   );

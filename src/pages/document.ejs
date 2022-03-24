@@ -234,7 +234,9 @@
           min-height: 420px;
         "
     >
-        <img src="<%= context.config.publicPath + 'loading.jpg' %>" alt="logo" width="256"/>
+        <img src="<%= context.config.publicPath + 'loading.jpg' %>" alt="logo"
+             onerror="javascript:this.src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';"
+             width="256"/>
         <div class="page-loading-warp">
             <div class="ant-spin ant-spin-lg ant-spin-spinning">
             <span class="ant-spin-dot ant-spin-dot-spin"

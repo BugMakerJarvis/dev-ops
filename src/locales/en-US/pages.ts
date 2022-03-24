@@ -293,4 +293,51 @@ export default {
   'pages.flow.todo.field.createTime': 'Create Time',
   'pages.flow.todo.field.option': 'Option',
   'pages.flow.todo.field.option.handle': 'Handle',
+
+  /**
+   * flow.handletask
+   */
+  'pages.flow.handletask.title.basic': 'Basic Information',
+  'pages.flow.handletask.title.approve': 'Approve Task',
+  'pages.flow.handletask.title.return': 'Return Task',
+  'pages.flow.handletask.title.reject': 'Reject Task',
+  'pages.flow.handletask.title.diagram': 'Flow Diagram',
+  'pages.flow.handletask.title.record': 'Approval Records',
+  'pages.flow.handletask.title.record.unknown': 'Unknown',
+  'pages.flow.handletask.title.record.anonymous': 'Anonymous Node',
+  'pages.flow.handletask.title.record.assigneeName': 'Assignee Name',
+  'pages.flow.handletask.title.record.createTime': 'Create Time',
+  'pages.flow.handletask.title.record.finishTime': 'Finish Time',
+  'pages.flow.handletask.title.record.duration': 'Duration',
+
+  'pages.flow.handletask.button.goBack': 'Go Back',
+  'pages.flow.handletask.button.submit': 'Submit',
+  'pages.flow.handletask.button.reset': 'Reset',
+  'pages.flow.handletask.button.approve': 'Approve',
+  'pages.flow.handletask.button.return': 'Return',
+  'pages.flow.handletask.button.reject': 'Reject',
+  'pages.flow.handletask.button.return.node': 'Return Node List',
+
+  'pages.flow.handletask.comment.approve': 'Approve Comment',
+  'pages.flow.handletask.comment.return': 'Return Comment',
+  'pages.flow.handletask.comment.reject': 'Reject Comment',
+
+  'pages.flow.handletask.response.submit.success': 'Submit Successful!',
+  'pages.flow.handletask.response.submit.fail': 'Submit Failed!',
+  'pages.flow.handletask.response.approve.success': 'Approve Successful!',
+  'pages.flow.handletask.response.approve.fail': 'Approve Failed!',
+  'pages.flow.handletask.response.return.success': 'Return Successful!',
+  'pages.flow.handletask.response.return.fail': 'Return Failed!',
+  'pages.flow.handletask.response.reject.success': 'Reject Successful!',
+  'pages.flow.handletask.response.reject.fail': 'Reject Failed!',
+
+  /**
+   * flow.formdesigner
+   */
+  'pages.flow.formdesigner.title': 'Form Designer',
+  'pages.flow.formdesigner.label.formName': 'Form Name',
+  'pages.flow.formdesigner.label.remark': 'Remark',
+  'pages.flow.formdesigner.button.save': 'Save Form',
+  'pages.flow.formdesigner.response.save.success': 'Save Successful!',
+  'pages.flow.formdesigner.response.save.fail': 'Save Failed!',
 };
