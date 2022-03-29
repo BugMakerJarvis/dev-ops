@@ -119,7 +119,7 @@ export default (): React.ReactNode => {
             </Form.Item>
           </Form>,
         ]}
-      ></PageHeader>
+      />
       <DesignForm ref={ref} />
     </div>
   );
